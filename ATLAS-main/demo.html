@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATLAS — Autonomous Threat Logic &amp; Adaptive Security</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ATLAS — Autonomous Threat Logic & Adaptive Security
+   Design system: Light Neomorphism, cartographic/command-deck motif
+   ============================================================ */
+
+:root{
+  /* ---- surface & shadow ---- */
+  --bg:            #E7ECF3;
+  --bg-2:          #EEF2F8;
+  --surface:       #EAEFF6;
+  --surface-raised:#EDF2F9;
+  --sh-dark:       rgba(163,177,204,.62);
+  --sh-light:      #ffffff;
+  --sh-dark-soft:  rgba(163,177,204,.4);
+  --sh-light-soft: rgba(255,255,255,.75);
+  --line:          rgba(163,177,204,.35);
+
+  /* ---- text ---- */
+  --ink:           #1D2436;
+  --ink-2:         #3B4359;
+  --muted:         #6E7890;
+  --faint:         #97A0B4;
+
+  /* ---- brand / accent ---- */
+  --accent:        #3457D8;
+  --accent-2:      #0EA5B7;
+  --accent-ink:    #1F3AA8;
+  --accent-glow:   rgba(52,87,216,.32);
+  --gold:          #B8862E;
+
+  /* ---- status ---- */
+  --danger:        #DD3E46;
+  --danger-soft:   rgba(221,62,70,.13);
+  --warning:       #DE8B2C;
+  --warning-soft:  rgba(222,139,44,.15);
+  --success:       #1E9E71;
+  --success-soft:  rgba(30,158,113,.14);
+  --info:          #0EA5B7;
+  --info-soft:     rgba(14,165,183,.14);
+
+  /* ---- type ---- */
+  --f-display: 'Sora', sans-serif;
+  --f-body:    'Inter', sans-serif;
+  --f-mono:    'IBM Plex Mono', monospace;
+
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:
+    radial-gradient(ellipse 900px 500px at 14% -6%, rgba(52,87,216,.07), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(14,165,183,.06), transparent 55%),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--f-body);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* faint topographic contour backdrop */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.5;
+  background-image:
+    repeating-radial-gradient(circle at 82% 8%, transparent 0 34px, rgba(163,177,204,.16) 35px, transparent 36px 70px),
+    repeating-radial-gradient(circle at 6% 92%, transparent 0 46px, rgba(52,87,216,.06) 47px, transparent 48px 90px);
+}
+
+::selection{ background:var(--accent); color:#fff; }
+a{ color:inherit; }
+button{ font-family:inherit; }
+
+/* ---------------- scrollbars ---------------- */
+::-webkit-scrollbar{ width:9px; height:9px; }
+::-webkit-scrollbar-track{ background:transparent; }
+::-webkit-scrollbar-thumb{ background:rgba(110,120,144,.35); border-radius:10px; }
+::-webkit-scrollbar-thumb:hover{ background:rgba(110,120,144,.55); }
+
+/* =================================================================
+   NEOMORPHIC PRIMITIVES
+   ================================================================= */
+.neo{
+  background:var(--surface);
+  border-radius:var(--radius-md);
+  box-shadow: 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light);
+}
+.neo-sm{
+  background:var(--surface);
+  border-radius:var(--radius-sm);
+  box-shadow: 5px 5px 10px var(--sh-dark-soft), -5px -5px 10px var(--sh-light-soft);
+}
+.neo-inset{
+  background:var(--bg-2);
+  border-radius:var(--radius-sm);
+  box-shadow: inset 4px 4px 9px var(--sh-dark-soft), inset -4px -4px 9px var(--sh-light-soft);
+}
+.neo-flat{
+  background:var(--surface);
+  border-radius:var(--radius-sm);
+  box-shadow: 3px 3px 7px var(--sh-dark-soft), -3px -3px 7px var(--sh-light-soft);
+}
+.neo-btn{
+  cursor:pointer;
+  border:none;
+  background:var(--surface);
+  border-radius:var(--radius-xs);
+  box-shadow: 4px 4px 9px var(--sh-dark-soft), -4px -4px 9px var(--sh-light-soft);
+  transition: box-shadow .15s ease, transform .15s ease, color .15s ease;
+  color:var(--ink-2);
+}
+.neo-btn:hover{ color:var(--accent); }
+.neo-btn:active{
+  box-shadow: inset 3px 3px 7px var(--sh-dark-soft), inset -3px -3px 7px var(--sh-light-soft);
+  transform:translateY(1px);
+}
+.neo-btn.primary{
+  background:linear-gradient(145deg,#3d63e6,#2c4bc4);
+  color:#fff;
+  box-shadow: 5px 5px 12px rgba(44,75,196,.4), -3px -3px 8px rgba(255,255,255,.5);
+}
+.neo-btn.primary:hover{ color:#fff; filter:brightness(1.06); }
+.neo-btn.primary:active{ box-shadow: inset 3px 3px 8px rgba(20,35,110,.5); }
+.neo-btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+.icon{ width:1em; height:1em; display:inline-block; vertical-align:-.14em; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+
+/* =================================================================
+   LAYOUT SHELL
+   ================================================================= */
+.app{
+  position:relative; z-index:1;
+  display:grid;
+  grid-template-columns: 264px 1fr;
+  min-height:100vh;
+}
+
+/* ---------------- SIDEBAR ---------------- */
+.sidebar{
+  padding:22px 16px;
+  display:flex; flex-direction:column;
+  gap:22px;
+  position:sticky; top:0; height:100vh;
+}
+.brand{
+  display:flex; align-items:center; gap:12px;
+  padding:6px 8px 14px 8px;
+}
+.brand-mark{
+  width:44px; height:44px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(150deg,#3d63e6 0%, #1f3aa8 100%);
+  box-shadow: 5px 5px 12px rgba(44,75,196,.35), -3px -3px 8px rgba(255,255,255,.6);
+  color:#fff; flex:none;
+}
+.brand-mark .icon{ width:24px; height:24px; }
+.brand-text{ line-height:1.15; }
+.brand-text b{ font-family:var(--f-display); font-size:19px; letter-spacing:.03em; font-weight:700; }
+.brand-text span{ display:block; font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-top:2px; }
+
+.nav{ display:flex; flex-direction:column; gap:6px; flex:1; }
+.nav-item{
+  display:flex; align-items:center; gap:12px;
+  padding:11px 14px; border-radius:14px;
+  color:var(--muted); font-size:13.5px; font-weight:600;
+  cursor:pointer; border:none; background:transparent; text-align:left; width:100%;
+  transition: all .15s ease;
+  position:relative;
+}
+.nav-item .icon{ width:18px; height:18px; flex:none; }
+.nav-item:hover{ color:var(--ink); background:rgba(163,177,204,.16); }
+.nav-item.active{
+  color:var(--accent-ink);
+  background:var(--surface);
+  box-shadow: 4px 4px 9px var(--sh-dark-soft), -4px -4px 9px var(--sh-light-soft);
+}
+.nav-item.active::before{
+  content:""; position:absolute; left:-16px; top:50%; transform:translateY(-50%);
+  width:4px; height:18px; border-radius:4px; background:var(--accent);
+}
+.nav-badge{
+  margin-left:auto; font-family:var(--f-mono); font-size:10px;
+  background:var(--danger-soft); color:var(--danger); padding:2px 6px; border-radius:20px; font-weight:700;
+}
+.nav-group-label{ font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:var(--faint); margin:10px 0 -2px 14px; font-weight:700; }
+
+.sidebar-foot{
+  padding:14px; display:flex; flex-direction:column; gap:10px;
+}
+.sys-status-row{ display:flex; align-items:center; gap:10px; font-size:11.5px; color:var(--muted); }
+.pulse-dot{ width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 0 0 rgba(30,158,113,.6); animation:pulseDot 2s infinite; flex:none; }
+.pulse-dot.warn{ background:var(--warning); box-shadow:0 0 0 0 rgba(222,139,44,.6); }
+.pulse-dot.danger{ background:var(--danger); box-shadow:0 0 0 0 rgba(221,62,70,.6); }
+@keyframes pulseDot{ 0%{box-shadow:0 0 0 0 rgba(30,158,113,.55);} 70%{box-shadow:0 0 0 8px rgba(30,158,113,0);} 100%{box-shadow:0 0 0 0 rgba(30,158,113,0);} }
+
+/* ---------------- MAIN ---------------- */
+.main{ min-width:0; display:flex; flex-direction:column; }
+.topbar{
+  display:flex; align-items:center; gap:16px;
+  padding:18px 30px; position:sticky; top:0; z-index:20;
+  backdrop-filter:blur(10px);
+  background:rgba(231,236,243,.78);
+  border-bottom:1px solid var(--line);
+}
+.page-title{ font-family:var(--f-display); font-size:21px; font-weight:700; letter-spacing:.01em; }
+.page-sub{ font-size:11.5px; color:var(--muted); font-family:var(--f-mono); margin-top:2px; }
+.topbar-spacer{ flex:1; }
+.search-box{
+  display:flex; align-items:center; gap:8px;
+  padding:9px 14px; width:230px; color:var(--muted); font-size:12.5px;
+}
+.search-box input{ border:none; background:transparent; outline:none; color:var(--ink); font-family:var(--f-body); font-size:12.5px; width:100%; }
+.icon-btn{
+  width:40px; height:40px; border-radius:13px; display:flex; align-items:center; justify-content:center; position:relative; flex:none;
+}
+.icon-btn .icon{ width:18px; height:18px; }
+.badge-count{
+  position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; padding:0 4px; border-radius:20px;
+  background:var(--danger); color:#fff; font-size:9.5px; font-weight:800; display:flex; align-items:center; justify-content:center;
+  font-family:var(--f-mono); box-shadow:0 0 0 2px var(--bg);
+}
+.threat-pill{
+  display:flex; align-items:center; gap:8px; padding:8px 14px 8px 10px; border-radius:30px; font-size:12px; font-weight:700;
+}
+.threat-pill .dot{ width:9px; height:9px; border-radius:50%; }
+.op-chip{ display:flex; align-items:center; gap:9px; padding:6px 12px 6px 6px; border-radius:30px; }
+.op-avatar{ width:30px; height:30px; border-radius:50%; background:linear-gradient(150deg,#3d63e6,#0ea5b7); display:flex; align-items:center; justify-content:center; color:#fff; font-family:var(--f-display); font-weight:700; font-size:12px; flex:none; }
+.op-chip .op-meta{ line-height:1.15; }
+.op-chip b{ font-size:12px; display:block; }
+.op-chip span{ font-size:10px; color:var(--muted); }
+
+.views{ padding:26px 30px 60px; flex:1; }
+.view{ display:none; animation:viewIn .35s ease; }
+.view.active{ display:block; }
+@keyframes viewIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none; } }
+
+.view-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:20px; gap:14px; flex-wrap:wrap; }
+.view-head h1{ font-family:var(--f-display); font-size:24px; margin:0 0 4px; }
+.view-head p{ margin:0; color:var(--muted); font-size:13px; max-width:560px; }
+.view-actions{ display:flex; gap:10px; }
+
+.eyebrow{ font-family:var(--f-mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent-ink); font-weight:700; display:flex; align-items:center; gap:8px;}
+.eyebrow::before{ content:""; width:16px; height:1.5px; background:var(--accent); display:inline-block; }
+
+/* =================================================================
+   STAT CARDS
+   ================================================================= */
+.stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:22px; }
+.stat-card{ padding:18px 20px; display:flex; flex-direction:column; gap:10px; }
+.stat-top{ display:flex; align-items:center; justify-content:space-between; }
+.stat-icon{ width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+.stat-icon .icon{ width:17px; height:17px; }
+.stat-trend{ font-family:var(--f-mono); font-size:11px; font-weight:700; padding:3px 7px; border-radius:8px; }
+.stat-trend.up{ color:var(--danger); background:var(--danger-soft); }
+.stat-trend.down{ color:var(--success); background:var(--success-soft); }
+.stat-trend.flat{ color:var(--muted); background:var(--sh-dark-soft); }
+.stat-value{ font-family:var(--f-display); font-size:30px; font-weight:700; letter-spacing:-.01em; }
+.stat-label{ font-size:12px; color:var(--muted); font-weight:600; }
+
+/* =================================================================
+   CORE HUB (signature visual)
+   ================================================================= */
+.hub-row{ display:grid; grid-template-columns: 1.35fr .95fr; gap:18px; margin-bottom:22px; align-items:stretch; }
+.hub-card{ padding:22px; position:relative; overflow:hidden; }
+.hub-card .eyebrow{ margin-bottom:2px; }
+.hub-card h2{ font-family:var(--f-display); font-size:18px; margin:2px 0 14px; }
+.hub-wrap{ display:flex; align-items:center; justify-content:center; padding:6px 0 2px; }
+.hub-center-label{ font-family:var(--f-mono); font-size:10px; fill:var(--muted); }
+
+.node-card{ padding:18px; display:flex; flex-direction:column; gap:14px; }
+.node-top{ display:flex; align-items:center; gap:12px; }
+.node-avatar{ width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; flex:none; background:linear-gradient(150deg,#3d63e6,#1f3aa8); color:#fff; box-shadow:5px 5px 12px rgba(44,75,196,.35); }
+.node-avatar .icon{ width:22px; height:22px; }
+.node-title{ font-family:var(--f-display); font-weight:700; font-size:15px; }
+.node-sub{ font-size:11px; color:var(--muted); font-family:var(--f-mono); }
+.node-msg{ font-size:12.5px; color:var(--ink-2); line-height:1.55; min-height:38px; }
+.node-msg b{ color:var(--accent-ink); }
+.node-foot{ display:flex; align-items:center; justify-content:space-between; }
+
+/* =================================================================
+   STATUS BADGES / PILLS
+   ================================================================= */
+.badge{ display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:800; letter-spacing:.03em; padding:4px 9px; border-radius:20px; text-transform:uppercase; font-family:var(--f-mono); }
+.badge.b-idle{ background:var(--sh-dark-soft); color:var(--muted); }
+.badge.b-monitoring{ background:var(--info-soft); color:var(--info); }
+.badge.b-active{ background:var(--warning-soft); color:var(--warning); }
+.badge.b-investigating{ background:#EFE3FB; color:#7B3FCF; }
+.badge.b-critical{ background:var(--danger-soft); color:var(--danger); }
+.badge.b-resolved{ background:var(--success-soft); color:var(--success); }
+.badge.b-offline{ background:rgba(110,120,144,.16); color:var(--faint); }
+.sev-dot{ width:7px; height:7px; border-radius:50%; flex:none; }
+.sev-low .sev-dot{ background:var(--success); } .sev-low{ color:var(--success); }
+.sev-medium .sev-dot{ background:var(--warning); } .sev-medium{ color:var(--warning); }
+.sev-high .sev-dot{ background:#e8722c; } .sev-high{ color:#e8722c; }
+.sev-critical .sev-dot{ background:var(--danger); } .sev-critical{ color:var(--danger); }
+
+/* =================================================================
+   AGENT GRID
+   ================================================================= */
+.section-block{ margin-bottom:24px; }
+.section-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.section-head h3{ font-family:var(--f-display); font-size:16px; margin:0; }
+.agent-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(228px,1fr)); gap:16px; }
+.agent-card{ padding:16px; display:flex; flex-direction:column; gap:12px; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease; position:relative; }
+.agent-card:hover{ transform:translateY(-3px); }
+.agent-card.is-active{ box-shadow: 0 0 0 2px var(--accent-glow), 8px 8px 16px var(--sh-dark), -8px -8px 16px var(--sh-light); }
+.agent-card.is-off{ opacity:.5; }
+.agent-top{ display:flex; align-items:center; gap:11px; }
+.a-avatar{ width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex:none; color:#fff; }
+.a-avatar .icon{ width:19px; height:19px; }
+.agent-name{ font-weight:700; font-size:13.5px; line-height:1.25; }
+.agent-domain{ font-size:10px; color:var(--muted); font-family:var(--f-mono); }
+.agent-action{ font-size:11.5px; color:var(--ink-2); line-height:1.5; min-height:34px; }
+.agent-foot{ display:flex; align-items:center; justify-content:space-between; }
+.mini-spark{ display:flex; align-items:flex-end; gap:2px; height:16px; }
+.mini-spark i{ width:3px; border-radius:2px; background:var(--accent); opacity:.55; display:block; }
+.toggle{ width:34px; height:19px; border-radius:20px; position:relative; cursor:pointer; flex:none; border:none; background:var(--sh-dark-soft); transition:background .2s; box-shadow:inset 2px 2px 5px var(--sh-dark-soft), inset -2px -2px 5px var(--sh-light-soft); }
+.toggle::after{ content:""; position:absolute; top:2px; left:2px; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:1px 1px 3px rgba(0,0,0,.25); transition:transform .2s; }
+.toggle.on{ background:linear-gradient(145deg,#3d63e6,#2c4bc4); }
+.toggle.on::after{ transform:translateX(15px); }
+
+/* =================================================================
+   TERMINAL / LOG STREAM
+   ================================================================= */
+.two-col{ display:grid; grid-template-columns:1.15fr .85fr; gap:18px; align-items:start; }
+.terminal{ padding:0; overflow:hidden; }
+.terminal-head{ display:flex; align-items:center; gap:8px; padding:13px 16px; border-bottom:1px solid var(--line); }
+.term-dot{ width:9px; height:9px; border-radius:50%; }
+.terminal-body{ font-family:var(--f-mono); font-size:11.5px; line-height:1.9; padding:12px 16px; height:340px; overflow-y:auto; }
+.log-line{ display:flex; gap:10px; white-space:pre-wrap; word-break:break-word; border-bottom:1px dashed rgba(163,177,204,.25); padding:4px 0; animation:logIn .3s ease; }
+@keyframes logIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:none;} }
+.log-time{ color:var(--faint); flex:none; }
+.log-tag{ flex:none; font-weight:700; }
+.log-tag.t-info{ color:var(--info); } .log-tag.t-warn{ color:var(--warning); } .log-tag.t-crit{ color:var(--danger); } .log-tag.t-ok{ color:var(--success); }
+.log-msg{ color:var(--ink-2); }
+
+.incident-list{ display:flex; flex-direction:column; gap:10px; max-height:340px; overflow-y:auto; padding-right:4px; }
+.incident-row{ padding:13px 14px; cursor:pointer; display:flex; align-items:center; gap:12px; }
+.incident-row:hover{ transform:translateX(2px); }
+.inc-sev-bar{ width:4px; align-self:stretch; border-radius:4px; flex:none; }
+.inc-body{ flex:1; min-width:0; }
+.inc-title{ font-weight:700; font-size:12.5px; margin-bottom:3px; }
+.inc-meta{ font-size:10.5px; color:var(--muted); font-family:var(--f-mono); display:flex; gap:8px; flex-wrap:wrap; }
+
+/* =================================================================
+   CARD / PANEL GENERIC
+   ================================================================= */
+.panel{ padding:20px; }
+.panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.panel-head h3{ font-family:var(--f-display); font-size:15px; margin:0; }
+
+/* =================================================================
+   INCIDENTS VIEW
+   ================================================================= */
+.filter-bar{ display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+.chip{ padding:8px 14px; font-size:12px; font-weight:700; border-radius:30px; cursor:pointer; color:var(--muted); }
+.chip.active{ color:var(--accent-ink); box-shadow: inset 2px 2px 5px var(--sh-dark-soft), inset -2px -2px 5px var(--sh-light-soft); }
+.inc-table{ display:flex; flex-direction:column; gap:10px; }
+.inc-table-row{ padding:15px 18px; display:grid; grid-template-columns: 20px 1.6fr 1fr 1fr 1fr 90px; align-items:center; gap:14px; cursor:pointer; }
+.inc-table-head{ padding:0 18px; display:grid; grid-template-columns: 20px 1.6fr 1fr 1fr 1fr 90px; gap:14px; font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:700; margin-bottom:2px; }
+.inc-table-row:hover{ transform:translateX(2px); }
+.cell-main b{ display:block; font-size:13px; }
+.cell-main span{ font-size:10.5px; color:var(--muted); font-family:var(--f-mono); }
+.cell-sub{ font-size:11.5px; color:var(--ink-2); font-family:var(--f-mono); }
+
+/* ---------------- drawer ---------------- */
+.overlay{ position:fixed; inset:0; background:rgba(20,26,45,.35); backdrop-filter:blur(2px); z-index:90; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+.overlay.show{ opacity:1; pointer-events:auto; }
+.drawer{ position:fixed; top:0; right:0; height:100vh; width:440px; max-width:92vw; background:var(--bg); z-index:95; box-shadow:-14px 0 40px rgba(20,26,45,.25); transform:translateX(100%); transition:transform .3s cubic-bezier(.2,.8,.2,1); overflow-y:auto; }
+.drawer.show{ transform:translateX(0); }
+.drawer-head{ padding:22px 24px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:2; display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.drawer-body{ padding:20px 24px 40px; display:flex; flex-direction:column; gap:18px; }
+.timeline{ display:flex; flex-direction:column; }
+.tl-item{ display:flex; gap:14px; position:relative; padding-bottom:20px; }
+.tl-item:last-child{ padding-bottom:0; }
+.tl-dot-wrap{ display:flex; flex-direction:column; align-items:center; flex:none; }
+.tl-dot{ width:26px; height:26px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:#fff; flex:none; }
+.tl-dot .icon{ width:13px; height:13px; }
+.tl-line{ flex:1; width:2px; background:var(--line); margin-top:4px; min-height:16px; }
+.tl-content b{ font-size:12.5px; display:block; margin-bottom:2px; }
+.tl-content p{ margin:0; font-size:11.5px; color:var(--muted); line-height:1.55; }
+.tl-content time{ font-size:9.5px; color:var(--faint); font-family:var(--f-mono); }
+
+/* =================================================================
+   NETWORK MAP
+   ================================================================= */
+.net-layout{ display:grid; grid-template-columns:1.4fr .9fr; gap:18px; }
+.topo-wrap{ padding:20px; }
+#topoSvg{ width:100%; height:420px; }
+.legend-row{ display:flex; gap:16px; margin-top:12px; flex-wrap:wrap; font-size:11px; color:var(--muted); }
+.legend-row span{ display:inline-flex; align-items:center; gap:6px; }
+.legend-dot{ width:8px; height:8px; border-radius:50%; }
+
+.rule-row{ display:flex; align-items:center; gap:10px; padding:10px 12px; font-size:11.5px; font-family:var(--f-mono); }
+.rule-row + .rule-row{ margin-top:8px; }
+
+/* =================================================================
+   FORENSICS
+   ================================================================= */
+.case-list{ display:flex; flex-direction:column; gap:10px; }
+.case-row{ padding:14px; cursor:pointer; display:flex; align-items:center; gap:12px; }
+.evidence-item{ display:flex; gap:12px; padding:12px; }
+.evidence-item .icon{ width:16px; height:16px; }
+.hash-tag{ font-family:var(--f-mono); font-size:10px; color:var(--muted); background:var(--bg-2); padding:3px 7px; border-radius:6px; word-break:break-all; }
+
+/* =================================================================
+   REPORTS
+   ================================================================= */
+.report-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:20px; }
+.donut-wrap{ display:flex; align-items:center; gap:20px; }
+.donut-legend{ display:flex; flex-direction:column; gap:9px; font-size:11.5px; }
+.donut-legend .dot{ width:9px; height:9px; border-radius:3px; display:inline-block; margin-right:8px; }
+.bar-chart{ display:flex; align-items:flex-end; gap:14px; height:170px; padding-top:10px; }
+.bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; height:100%; justify-content:flex-end; }
+.bar-col .bar{ width:100%; border-radius:8px 8px 4px 4px; background:linear-gradient(180deg,#5378ea,#2c4bc4); min-height:4px; }
+.bar-col span{ font-size:9.5px; color:var(--muted); font-family:var(--f-mono); text-align:center; }
+.report-card-row{ display:flex; flex-direction:column; gap:10px; }
+.report-item{ padding:14px 16px; display:flex; align-items:center; gap:14px; }
+.report-item .icon{ width:18px; height:18px; }
+
+/* =================================================================
+   VOICE CONSOLE
+   ================================================================= */
+.voice-layout{ display:grid; grid-template-columns: .8fr 1.2fr; gap:20px; }
+.voice-orb-card{ padding:30px 20px 26px; display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center; }
+.orb-outer{ width:168px; height:168px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; background:var(--surface); box-shadow:9px 9px 20px var(--sh-dark), -9px -9px 20px var(--sh-light); }
+.orb-ring{ position:absolute; inset:0; border-radius:50%; border:2px solid rgba(52,87,216,.25); opacity:0; }
+.orb-outer.listening .orb-ring{ animation:orbRing 1.6s ease-out infinite; }
+.orb-outer.listening .orb-ring:nth-child(2){ animation-delay:.5s; }
+@keyframes orbRing{ 0%{ opacity:.7; transform:scale(.85);} 100%{ opacity:0; transform:scale(1.35);} }
+.orb-core{ width:104px; height:104px; border-radius:50%; background:linear-gradient(150deg,#3d63e6,#1f3aa8); display:flex; align-items:center; justify-content:center; color:#fff; box-shadow:6px 6px 16px rgba(44,75,196,.4); cursor:pointer; transition:transform .15s; }
+.orb-core:active{ transform:scale(.96); }
+.orb-core .icon{ width:38px; height:38px; }
+.orb-outer.listening .orb-core{ animation:orbPulse 1.4s ease-in-out infinite; }
+@keyframes orbPulse{ 0%,100%{ box-shadow:6px 6px 16px rgba(44,75,216,.4);} 50%{ box-shadow:6px 6px 30px rgba(44,75,216,.7);} }
+.voice-state{ font-family:var(--f-mono); font-size:11.5px; color:var(--muted); min-height:16px; }
+.voice-hint{ font-size:11px; color:var(--faint); max-width:220px; }
+.wave-bars{ display:flex; align-items:center; gap:3px; height:22px; }
+.wave-bars i{ width:3px; border-radius:2px; background:var(--accent); height:5px; }
+.orb-outer.listening + .wave-bars i, .voice-orb-card.listening .wave-bars i{ animation:wav 1s ease-in-out infinite; }
+
+.transcript{ padding:0; display:flex; flex-direction:column; height:460px; }
+.transcript-body{ flex:1; overflow-y:auto; padding:18px 20px; display:flex; flex-direction:column; gap:12px; }
+.msg{ max-width:82%; padding:10px 14px; border-radius:16px; font-size:12.5px; line-height:1.5; }
+.msg.user{ align-self:flex-end; background:linear-gradient(145deg,#3d63e6,#2c4bc4); color:#fff; border-bottom-right-radius:4px; }
+.msg.atlas{ align-self:flex-start; background:var(--bg-2); color:var(--ink-2); border-bottom-left-radius:4px; box-shadow:inset 2px 2px 5px var(--sh-dark-soft), inset -2px -2px 5px var(--sh-light-soft); }
+.msg time{ display:block; font-size:9px; opacity:.65; margin-top:5px; font-family:var(--f-mono); }
+.cmd-input-row{ display:flex; gap:10px; padding:14px 16px; border-top:1px solid var(--line); }
+.cmd-input-row input{ flex:1; border:none; background:var(--bg-2); border-radius:14px; padding:11px 15px; font-family:var(--f-body); font-size:12.5px; outline:none; box-shadow:inset 3px 3px 7px var(--sh-dark-soft), inset -3px -3px 7px var(--sh-light-soft); }
+.cmd-suggest{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.cmd-suggest button{ font-size:10.5px; padding:6px 11px; border-radius:20px; color:var(--muted); font-family:var(--f-mono); }
+
+/* =================================================================
+   SETTINGS
+   ================================================================= */
+.settings-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.setting-row{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 4px; border-bottom:1px dashed var(--line); }
+.setting-row:last-child{ border-bottom:none; }
+.setting-row b{ display:block; font-size:12.5px; }
+.setting-row p{ margin:2px 0 0; font-size:11px; color:var(--muted); }
+
+/* =================================================================
+   TOASTS
+   ================================================================= */
+#toast-container{ position:fixed; bottom:22px; right:22px; z-index:200; display:flex; flex-direction:column; gap:10px; width:320px; max-width:88vw; }
+.toast{ padding:14px 16px; display:flex; gap:12px; align-items:flex-start; animation:toastIn .3s ease; }
+@keyframes toastIn{ from{opacity:0; transform:translateX(30px);} to{opacity:1; transform:none;} }
+.toast .icon{ width:16px; height:16px; flex:none; margin-top:2px; }
+.toast b{ font-size:12px; display:block; }
+.toast p{ margin:2px 0 0; font-size:11px; color:var(--muted); line-height:1.4; }
+.toast.crit .icon{ color:var(--danger); } .toast.warn .icon{ color:var(--warning); } .toast.ok .icon{ color:var(--success); } .toast.info .icon{ color:var(--info); }
+
+/* =================================================================
+   MISC
+   ================================================================= */
+.hidden{ display:none !important; }
+.empty-state{ text-align:center; padding:40px 20px; color:var(--muted); }
+.empty-state .icon{ width:34px; height:34px; margin-bottom:10px; color:var(--faint); }
+.empty-state p{ font-size:12.5px; }
+.kbd{ font-family:var(--f-mono); font-size:10px; background:var(--bg-2); padding:2px 6px; border-radius:5px; box-shadow:inset 1px 1px 3px var(--sh-dark-soft); }
+
+.mobile-toggle{ display:none; }
+
+@keyframes wav{ 0%,100%{ height:5px;} 50%{ height:20px;} }
+
+/* =================================================================
+   RESPONSIVE
+   ================================================================= */
+@media (max-width:1180px){
+  .stat-row{ grid-template-columns:repeat(2,1fr); }
+  .hub-row, .two-col, .net-layout, .voice-layout, .report-grid, .settings-grid{ grid-template-columns:1fr; }
+}
+@media (max-width:880px){
+  .app{ grid-template-columns:1fr; }
+  .sidebar{ position:fixed; left:0; top:0; z-index:100; width:250px; transform:translateX(-104%); transition:transform .25s ease; box-shadow:20px 0 40px rgba(0,0,0,.15); background:var(--bg); }
+  .sidebar.open{ transform:translateX(0); }
+  .mobile-toggle{ display:flex; }
+  .search-box{ display:none; }
+  .topbar{ padding:14px 16px; }
+  .views{ padding:18px 16px 60px; }
+  .inc-table-row, .inc-table-head{ grid-template-columns: 16px 1.4fr 1fr; }
+  .inc-table-row .cell-sub:nth-child(4), .inc-table-row .cell-sub:nth-child(5), .inc-table-head span:nth-child(4), .inc-table-head span:nth-child(5){ display:none; }
+}
+</style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+
+<symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5.5 3.5 9.5 8 11 4.5-1.5 8-5.5 8-11V5z"/><path d="M9 9l6 6M15 9l-6 6"/></symbol>
+<symbol id="ic-login" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M4 20c0-3.2 2.4-5.6 5-5.6s5 2.4 5 5.6"/><circle cx="18.2" cy="16.2" r="2.3"/><path d="M19.8 17.8 21.6 19.6"/></symbol>
+<symbol id="ic-network" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.1"/><circle cx="18" cy="6" r="2.1"/><circle cx="12" cy="18.2" r="2.1"/><circle cx="12" cy="11" r="2.1"/><path d="M7.5 7.4 10.4 9.6M16.5 7.4 13.6 9.6M12 13 12 16.1"/></symbol>
+<symbol id="ic-bug" viewBox="0 0 24 24"><ellipse cx="12" cy="13.2" rx="5" ry="6.2"/><path d="M12 7v-3M8.4 5.2 9.9 7.4M15.6 5.2 14.1 7.4M3.8 10 7 11.2M20.2 10 17 11.2M3.8 16.4 7 15.2M20.2 16.4 17 15.2M4.4 20.4 7.8 18.2M19.6 20.4 16.2 18.2"/></symbol>
+<symbol id="ic-mail-warn" viewBox="0 0 24 24"><rect x="2.5" y="6" width="16" height="12.5" rx="2"/><path d="M2.5 7 10.5 13 18.5 7"/><circle cx="19.4" cy="5.2" r="3.1"/><path d="M19.4 3.9v1.6" stroke-width="1.7"/><circle cx="19.4" cy="6.6" r=".18" fill="currentColor"/></symbol>
+<symbol id="ic-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="4.6" stroke-dasharray="2.2 2.6"/><path d="M12 12 3.8 12" opacity="0"/><path d="M12 3.8A8.2 8.2 0 0 1 20.2 12" stroke-width="2"/><path d="M12 12 12 6.4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15.4" cy="8.6" r=".9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="ic-siren" viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 1 4 4v5H8V7a4 4 0 0 1 4-4Z"/><path d="M6 14h12"/><rect x="6.5" y="16" width="11" height="3.4" rx="1.2"/><path d="M12 1v1.6"/></symbol>
+<symbol id="ic-file" viewBox="0 0 24 24"><path d="M6.5 2h7.2L18.5 6.3V22h-12Z"/><path d="M13.7 2v4.3h4.3"/><path d="M9 12.4h6M9 15.4h6M9 18.4h3.6"/></symbol>
+<symbol id="ic-search" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.6"/><path d="M15.6 15.6 20.8 20.8"/></symbol>
+<symbol id="ic-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.6" width="15" height="9.4" rx="2.2"/><path d="M7.8 10.6V7a4.2 4.2 0 0 1 8.4 0v3.6"/><circle cx="12" cy="15" r="1.5" fill="currentColor" stroke="none"/><path d="M12 16.5v1.8"/></symbol>
+<symbol id="ic-eye" viewBox="0 0 24 24"><path d="M1.6 12S5.8 5.6 12 5.6 22.4 12 22.4 12 18.2 18.4 12 18.4 1.6 12 1.6 12Z"/><circle cx="12" cy="12" r="3.1"/><circle cx="19.6" cy="5.4" r="1.3" fill="currentColor" stroke="none"/></symbol>
+<symbol id="ic-report" viewBox="0 0 24 24"><rect x="4" y="2.6" width="16" height="18.8" rx="2.2"/><path d="M8 14.2v3M12 10.6v6.6M16 7.6v9.6"/></symbol>
+<symbol id="ic-mic" viewBox="0 0 24 24"><rect x="9" y="2.6" width="6" height="11.4" rx="3"/><path d="M5.4 11.2a6.6 6.6 0 0 0 13.2 0"/><path d="M12 17.8v3.2M9 21h6"/></symbol>
+<symbol id="ic-cpu" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><rect x="10.3" y="10.3" width="3.4" height="3.4"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5M4.6 4.6 8 8M16 16l3.4 3.4M19.4 4.6 16 8M8 16l-3.4 3.4"/></symbol>
+<symbol id="ic-close" viewBox="0 0 24 24"><path d="M6 6 18 18M18 6 6 18"/></symbol>
+<symbol id="ic-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="ic-bell" viewBox="0 0 24 24"><path d="M6 10.4a6 6 0 0 1 12 0c0 4.2 1.6 5.6 2 6.2H4c.4-.6 2-2 2-6.2Z"/><path d="M10 19.2a2 2 0 0 0 4 0"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M4 12.6 9 17.6 20 5.6"/></symbol>
+<symbol id="ic-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.3 5.3l2.2 2.2M16.5 16.5l2.2 2.2M18.7 5.3l-2.2 2.2M7.5 16.5l-2.2 2.2"/></symbol>
+<symbol id="ic-activity" viewBox="0 0 24 24"><path d="M2 12.6h4.4l2-6.4 3.6 13 2.4-9.6 1.6 3h5.8"/></symbol>
+<symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.6" height="7.6" rx="1.4"/><rect x="13.4" y="3" width="7.6" height="7.6" rx="1.4"/><rect x="3" y="13.4" width="7.6" height="7.6" rx="1.4"/><rect x="13.4" y="13.4" width="7.6" height="7.6" rx="1.4"/></symbol>
+<symbol id="ic-alert-tri" viewBox="0 0 24 24"><path d="M12 3 22 20H2Z"/><path d="M12 9.4v4.6"/><circle cx="12" cy="17" r=".2" fill="currentColor"/></symbol>
+<symbol id="ic-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M2.8 12h18.4"/><path d="M12 2.8a15.4 9.2 0 0 1 0 18.4 15.4 9.2 0 0 1 0-18.4Z"/></symbol>
+<symbol id="ic-fingerprint" viewBox="0 0 24 24"><circle cx="10.6" cy="10.6" r="6.6"/><path d="M15.6 15.6 20.8 20.8"/><path d="M10.6 7.5a3.1 3.1 0 0 1 3.1 3.1"/></symbol>
+<symbol id="ic-brain" viewBox="0 0 24 24"><path d="M9 3.5a3 3 0 0 0-3 3v.4a3 3 0 0 0-1.8 4.9A3.2 3.2 0 0 0 5.6 17a3 3 0 0 0 3.4 2.5V21h6v-1.5A3 3 0 0 0 18.4 17a3.2 3.2 0 0 0 1.4-5.2 3 3 0 0 0-1.8-4.9V6a3 3 0 0 0-3-3Z"/><path d="M9 6.5v11M15 6.5v11M9 10h2.4M12.6 10H15M9 14h2.4M12.6 14H15"/></symbol>
+<symbol id="ic-send" viewBox="0 0 24 24"><path d="M3.4 11.6 20.6 4 13 21.2 10.4 14.2 3.4 11.6Z"/><path d="M10.4 14.2 15 9.6"/></symbol>
+<symbol id="ic-download" viewBox="0 0 24 24"><path d="M12 3v12.4M7.4 11 12 15.6 16.6 11"/><path d="M4.4 18h15.2"/></symbol>
+<symbol id="ic-power" viewBox="0 0 24 24"><path d="M12 3v8.4"/><path d="M7 5.6a8 8 0 1 0 10 0"/></symbol>
+<symbol id="ic-server" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="6.4" rx="1.6"/><rect x="3.5" y="14" width="17" height="6.4" rx="1.6"/><circle cx="7.2" cy="6.7" r=".2" fill="currentColor"/><circle cx="7.2" cy="17.2" r=".2" fill="currentColor"/></symbol>
+</defs>
+</svg>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><svg class="icon"><use href="#ic-globe"/></svg></div>
+      <div class="brand-text">
+        <b>ATLAS</b>
+        <span>Adaptive Security</span>
+      </div>
+    </div>
+
+    <nav class="nav" id="navList">
+      <button class="nav-item active" data-view="dashboard"><svg class="icon"><use href="#ic-grid"/></svg>Command Deck</button>
+      <button class="nav-item" data-view="agents"><svg class="icon"><use href="#ic-cpu"/></svg>Agent Fleet</button>
+      <button class="nav-item" data-view="incidents"><svg class="icon"><use href="#ic-alert-tri"/></svg>Incidents<span class="nav-badge" id="navIncidentBadge">0</span></button>
+      <button class="nav-item" data-view="network"><svg class="icon"><use href="#ic-network"/></svg>Network Map</button>
+      <button class="nav-item" data-view="forensics"><svg class="icon"><use href="#ic-fingerprint"/></svg>Forensics</button>
+      <button class="nav-item" data-view="reports"><svg class="icon"><use href="#ic-report"/></svg>Reports</button>
+      <div class="nav-group-label">Interface</div>
+      <button class="nav-item" data-view="voice"><svg class="icon"><use href="#ic-mic"/></svg>Voice Console</button>
+      <button class="nav-item" data-view="settings"><svg class="icon"><use href="#ic-gear"/></svg>Settings</button>
+    </nav>
+
+    <div class="sidebar-foot neo-flat">
+      <div class="sys-status-row"><span class="pulse-dot" id="sysPulse"></span> <span id="sysStatusText">All systems nominal</span></div>
+      <div class="sys-status-row"><svg class="icon" style="width:13px;height:13px"><use href="#ic-activity"/></svg> <span id="sysEventsSec">0</span> events/sec</div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <header class="topbar">
+      <button class="neo-btn icon-btn mobile-toggle" id="mobileNavBtn"><svg class="icon"><use href="#ic-grid"/></svg></button>
+      <div>
+        <div class="page-title" id="pageTitle">Command Deck</div>
+        <div class="page-sub" id="pageSub">SECTOR // GLOBAL-INFRA-01</div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="search-box neo-inset">
+        <svg class="icon"><use href="#ic-search"/></svg>
+        <input type="text" placeholder="Search IP, agent, incident…" id="globalSearch">
+      </div>
+      <div class="threat-pill neo-flat" id="threatPill">
+        <span class="dot" id="threatDot"></span>
+        <span id="threatLevelText">THREAT LEVEL: LOW</span>
+      </div>
+      <button class="neo-btn icon-btn" id="bellBtn" title="Notifications">
+        <svg class="icon"><use href="#ic-bell"/></svg>
+        <span class="badge-count hidden" id="bellCount">0</span>
+      </button>
+      <button class="neo-btn icon-btn" id="micTopBtn" title="Talk to ATLAS">
+        <svg class="icon"><use href="#ic-mic"/></svg>
+      </button>
+      <div class="op-chip neo-flat">
+        <div class="op-avatar">OP</div>
+        <div class="op-meta"><b>Operator One</b><span>SOC · Level 3</span></div>
+      </div>
+    </header>
+
+    <div class="views">
+
+      <!-- ================= DASHBOARD ================= -->
+      <section class="view active" id="view-dashboard">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Live Operations</div>
+            <h1>Command Deck</h1>
+            <p>Real-time posture across authorized infrastructure — 14 agents orchestrated by the Decision Core.</p>
+          </div>
+          <div class="view-actions">
+            <button class="neo-btn primary" id="dashLockdownBtn" style="padding:11px 18px;font-weight:700;font-size:12.5px;display:flex;gap:8px;align-items:center"><svg class="icon"><use href="#ic-shield"/></svg>Lockdown</button>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-card neo">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--danger-soft);color:var(--danger)"><svg class="icon"><use href="#ic-alert-tri"/></svg></div><span class="stat-trend up" id="statThreatsTrend">+0</span></div>
+            <div class="stat-value" id="statActiveThreats">0</div>
+            <div class="stat-label">Active Threats</div>
+          </div>
+          <div class="stat-card neo">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--info-soft);color:var(--info)"><svg class="icon"><use href="#ic-activity"/></svg></div><span class="stat-trend flat" id="statEventsTrend">live</span></div>
+            <div class="stat-value" id="statEventsSec">0</div>
+            <div class="stat-label">Events / sec</div>
+          </div>
+          <div class="stat-card neo">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--success-soft);color:var(--success)"><svg class="icon"><use href="#ic-cpu"/></svg></div><span class="stat-trend down" id="statAgentsTrend">100%</span></div>
+            <div class="stat-value"><span id="statAgentsOnline">14</span>/14</div>
+            <div class="stat-label">Agents Online</div>
+          </div>
+          <div class="stat-card neo">
+            <div class="stat-top"><div class="stat-icon" style="background:var(--warning-soft);color:var(--warning)"><svg class="icon"><use href="#ic-siren"/></svg></div><span class="stat-trend down" id="statMttrTrend">-4%</span></div>
+            <div class="stat-value"><span id="statMttr">1.8</span>s</div>
+            <div class="stat-label">Avg. Response Time</div>
+          </div>
+        </div>
+
+        <div class="hub-row">
+          <div class="hub-card neo">
+            <div class="eyebrow">Decision Core</div>
+            <h2>Multi-Agent Coordination Hub</h2>
+            <div class="hub-wrap"><svg id="hubSvg" viewBox="0 0 560 400" style="width:100%;height:auto;max-height:380px"></svg></div>
+          </div>
+          <div class="node-card neo" id="focusAgentCard">
+            <div class="eyebrow">Currently Orchestrating</div>
+            <div class="node-top">
+              <div class="node-avatar" id="focusAvatar"><svg class="icon"><use href="#ic-cpu"/></svg></div>
+              <div>
+                <div class="node-title" id="focusName">Decision Making Agent</div>
+                <div class="node-sub" id="focusDomain">Agentic AI &amp; Autonomous Decision Systems</div>
+              </div>
+            </div>
+            <div class="node-msg" id="focusMsg">Standing by. Awaiting telemetry from the sensor grid to begin correlation…</div>
+            <div class="node-foot">
+              <span class="badge b-monitoring" id="focusBadge">MONITORING</span>
+              <span class="page-sub" id="focusTime" style="margin:0">--:--:--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <div class="section-head">
+            <h3>Agent Fleet — Live Status</h3>
+            <span class="eyebrow" style="cursor:pointer" data-view-link="agents">View all →</span>
+          </div>
+          <div class="agent-grid" id="dashAgentGrid"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="terminal neo">
+            <div class="terminal-head">
+              <span class="term-dot" style="background:#e5484d"></span><span class="term-dot" style="background:#de8b2c"></span><span class="term-dot" style="background:#1e9e71"></span>
+              <span class="page-sub" style="margin:0 auto 0 10px">live-event-stream.log</span>
+              <button class="neo-btn icon-btn" style="width:28px;height:28px" id="clearLogBtn" title="Clear"><svg class="icon" style="width:13px;height:13px"><use href="#ic-close"/></svg></button>
+            </div>
+            <div class="terminal-body" id="logStream"></div>
+          </div>
+          <div class="panel neo">
+            <div class="panel-head"><h3>Recent Incidents</h3><span class="eyebrow" style="cursor:pointer" data-view-link="incidents">All →</span></div>
+            <div class="incident-list" id="dashIncidentList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= AGENTS ================= -->
+      <section class="view" id="view-agents">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Agent Fleet</div>
+            <h1>14 Specialized AI Agents</h1>
+            <p>Each agent owns a security domain and reports findings to the Decision Making Agent for coordinated response.</p>
+          </div>
+        </div>
+        <div class="agent-grid" id="fullAgentGrid"></div>
+      </section>
+
+      <!-- ================= INCIDENTS ================= -->
+      <section class="view" id="view-incidents">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Response Queue</div>
+            <h1>Incidents</h1>
+            <p>Every detection routed, correlated and actioned by the agent pipeline.</p>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <button class="chip neo-flat active" data-filter="all">All</button>
+          <button class="chip neo-flat" data-filter="critical">Critical</button>
+          <button class="chip neo-flat" data-filter="high">High</button>
+          <button class="chip neo-flat" data-filter="medium">Medium</button>
+          <button class="chip neo-flat" data-filter="low">Low</button>
+          <button class="chip neo-flat" data-filter="open">Open only</button>
+        </div>
+        <div class="inc-table-head">
+          <span></span><span>Incident</span><span>Type</span><span>Source</span><span>Agents</span><span>Status</span>
+        </div>
+        <div class="inc-table" id="incidentTable"></div>
+      </section>
+
+      <!-- ================= NETWORK ================= -->
+      <section class="view" id="view-network">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Perimeter &amp; Traffic</div>
+            <h1>Network Map</h1>
+            <p>Topology monitored by the Firewall and Network Monitoring Agents.</p>
+          </div>
+          <div class="view-actions">
+            <button class="neo-btn" id="scanNetworkBtn" style="padding:10px 16px;font-size:12px;font-weight:700">Run Full Scan</button>
+          </div>
+        </div>
+        <div class="net-layout">
+          <div class="topo-wrap neo">
+            <svg id="topoSvg" viewBox="0 0 640 420"></svg>
+            <div class="legend-row">
+              <span><i class="legend-dot" style="background:var(--success)"></i>Secure</span>
+              <span><i class="legend-dot" style="background:var(--warning)"></i>Elevated</span>
+              <span><i class="legend-dot" style="background:var(--danger)"></i>Under Attack</span>
+              <span><i class="legend-dot" style="background:var(--faint)"></i>Offline</span>
+            </div>
+          </div>
+          <div class="panel neo">
+            <div class="panel-head"><h3>Firewall Rules</h3><span class="badge b-active">14 ACTIVE</span></div>
+            <div id="firewallRules"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FORENSICS ================= -->
+      <section class="view" id="view-forensics">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Deep Investigation</div>
+            <h1>Forensics</h1>
+            <p>Evidence chains compiled by the Forensics Agent for high-severity incidents.</p>
+          </div>
+        </div>
+        <div class="two-col" style="grid-template-columns:.85fr 1.15fr">
+          <div class="panel neo">
+            <div class="panel-head"><h3>Case Files</h3></div>
+            <div class="case-list" id="caseList"></div>
+          </div>
+          <div class="panel neo" id="caseDetail">
+            <div class="empty-state">
+              <svg class="icon"><use href="#ic-fingerprint"/></svg>
+              <p>Select a case to view the evidence chain, hashes and root-cause analysis.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= REPORTS ================= -->
+      <section class="view" id="view-reports">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Report Generation Agent</div>
+            <h1>Reports</h1>
+            <p>Synthesized analytics across every agent's activity.</p>
+          </div>
+          <div class="view-actions">
+            <button class="neo-btn primary" id="genReportBtn" style="padding:11px 18px;font-weight:700;font-size:12.5px;display:flex;gap:8px;align-items:center"><svg class="icon"><use href="#ic-report"/></svg>Generate Report</button>
+          </div>
+        </div>
+        <div class="report-grid">
+          <div class="panel neo">
+            <div class="panel-head"><h3>Attack Type Distribution</h3></div>
+            <div class="donut-wrap">
+              <svg id="donutSvg" viewBox="0 0 140 140" style="width:140px;height:140px;flex:none"></svg>
+              <div class="donut-legend" id="donutLegend"></div>
+            </div>
+          </div>
+          <div class="panel neo">
+            <div class="panel-head"><h3>Agent Actions (24h)</h3></div>
+            <div class="bar-chart" id="barChart"></div>
+          </div>
+        </div>
+        <div class="panel neo">
+          <div class="panel-head"><h3>Generated Reports</h3></div>
+          <div class="report-card-row" id="reportList"></div>
+        </div>
+      </section>
+
+      <!-- ================= VOICE CONSOLE ================= -->
+      <section class="view" id="view-voice">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Voice Assistant Agent</div>
+            <h1>Voice Console</h1>
+            <p>Command ATLAS with natural language — by voice or text.</p>
+          </div>
+        </div>
+        <div class="voice-layout">
+          <div class="voice-orb-card neo">
+            <div class="orb-outer" id="orbOuter">
+              <span class="orb-ring"></span><span class="orb-ring"></span>
+              <div class="orb-core" id="orbCore"><svg class="icon"><use href="#ic-mic"/></svg></div>
+            </div>
+            <div class="voice-state" id="voiceState">Tap the orb to speak</div>
+            <div class="voice-hint" id="voiceHint">Voice recognition uses your browser's Web Speech API. If unsupported, use the text console →</div>
+          </div>
+          <div class="transcript neo">
+            <div class="transcript-body" id="transcriptBody"></div>
+            <div style="padding:0 16px">
+              <div class="cmd-suggest" id="cmdSuggest"></div>
+            </div>
+            <div class="cmd-input-row">
+              <input type="text" id="cmdInput" placeholder="Type a command… e.g. 'show active threats'">
+              <button class="neo-btn icon-btn" id="cmdSendBtn"><svg class="icon"><use href="#ic-send"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SETTINGS ================= -->
+      <section class="view" id="view-settings">
+        <div class="view-head">
+          <div>
+            <div class="eyebrow">Configuration</div>
+            <h1>Settings</h1>
+            <p>Enable, disable and tune the agent fleet.</p>
+          </div>
+        </div>
+        <div class="settings-grid">
+          <div class="panel neo">
+            <div class="panel-head"><h3>Agent Enablement</h3></div>
+            <div id="settingsAgentList"></div>
+          </div>
+          <div class="panel neo">
+            <div class="panel-head"><h3>System</h3></div>
+            <div class="setting-row"><div><b>Event simulation speed</b><p>How often new telemetry events are generated</p></div>
+              <select id="speedSelect" class="neo-flat" style="border:none;padding:8px 12px;border-radius:10px;font-size:12px;font-family:var(--f-mono)">
+                <option value="3200">Normal</option>
+                <option value="1400">Fast</option>
+                <option value="600">Stress Test</option>
+              </select>
+            </div>
+            <div class="setting-row"><div><b>Voice replies</b><p>ATLAS speaks responses aloud (Text-to-Speech)</p></div><button class="toggle on" id="ttsToggle"></button></div>
+            <div class="setting-row"><div><b>Desktop-style toasts</b><p>Show pop-up alerts for critical incidents</p></div><button class="toggle on" id="toastToggle"></button></div>
+            <div class="setting-row"><div><b>Auto-response</b><p>Incident Response Agent may act without confirmation</p></div><button class="toggle on" id="autoRespondToggle"></button></div>
+            <div class="setting-row" style="border-bottom:none">
+              <div><b>About ATLAS</b><p>Autonomous Threat Logic &amp; Adaptive Security — Agentic AI + Cybersecurity, v1.0</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="drawerOverlay"></div>
+<div class="drawer" id="incidentDrawer"></div>
+<div id="toast-container"></div>
+<script>
+/* ============================================================
+   ATLAS — application logic
+   ============================================================ */
+(function(){
+"use strict";
+
+/* ---------------------------------------------------------------
+   1. AGENT REGISTRY
+   --------------------------------------------------------------- */
+const AGENTS = [
+  { id:'firewall',  name:'Firewall Agent',            domain:'Network Security',                          sector:'Cybersecurity', icon:'ic-shield',       grad:['#3d63e6','#1f3aa8'] },
+  { id:'login',     name:'Login Monitoring Agent',    domain:'Identity & Access Management',              sector:'Cybersecurity', icon:'ic-login',        grad:['#7c5cf0','#4b32b3'] },
+  { id:'network',   name:'Network Monitoring Agent',  domain:'Traffic Analysis',                          sector:'Cybersecurity', icon:'ic-network',      grad:['#12b3c4','#0a7d8a'] },
+  { id:'malware',   name:'Malware Detection Agent',   domain:'Endpoint Security',                         sector:'Cybersecurity', icon:'ic-bug',           grad:['#e5636a','#b13138'] },
+  { id:'phishing',  name:'Phishing Detection Agent',  domain:'Email Security',                            sector:'Cybersecurity', icon:'ic-mail-warn',     grad:['#f0973a','#c96f1c'] },
+  { id:'threatintel', name:'Threat Intelligence Agent', domain:'Risk & Intel Analysis',                   sector:'Cybersecurity', icon:'ic-radar',         grad:['#0ea5b7','#0a7d8a'] },
+  { id:'incident',  name:'Incident Response Agent',   domain:'Security Operations (SOC)',                 sector:'Cybersecurity', icon:'ic-siren',         grad:['#dd3e46','#a92830'] },
+  { id:'log',       name:'Log Analysis Agent',        domain:'Log Analytics & SIEM',                      sector:'Cybersecurity', icon:'ic-file',          grad:['#6e7890','#3b4359'] },
+  { id:'forensics', name:'Forensics Agent',           domain:'Digital Forensics',                         sector:'Cybersecurity', icon:'ic-fingerprint',   grad:['#8a5cf0','#5c34c9'] },
+  { id:'password',  name:'Password Security Agent',   domain:'Authentication & Credentials',              sector:'Cybersecurity', icon:'ic-lock',          grad:['#b8862e','#8f6620'] },
+  { id:'insider',   name:'Insider Threat Agent',      domain:'User Behaviour Analytics (UEBA)',           sector:'Cybersecurity', icon:'ic-eye',           grad:['#c94b8c','#96336a'] },
+  { id:'report',    name:'Report Generation Agent',   domain:'AI Analytics & Reporting',                  sector:'Enterprise Security', icon:'ic-report',   grad:['#1e9e71','#136e4f'] },
+  { id:'voice',     name:'Voice Assistant Agent',     domain:'Speech AI & NLP',                           sector:'Artificial Intelligence', icon:'ic-mic',  grad:['#3d63e6','#2c4bc4'] },
+  { id:'decision',  name:'Decision Making Agent',     domain:'Agentic AI & Autonomous Decision Systems',  sector:'Artificial Intelligence', icon:'ic-cpu',  grad:['#1f3aa8','#0f2166'] },
+];
+const byId = id => AGENTS.find(a=>a.id===id);
+
+/* ---------------------------------------------------------------
+   2. STATE
+   --------------------------------------------------------------- */
+const state = {
+  agents:{},              // id -> {status, lastAction, enabled, ts, actions[]}
+  incidents:[],           // {id, type, ip, severity, status, agents[], ts, timeline[]}
+  cases:[],                // forensics cases derived from critical incidents
+  reports:[],
+  blockedIPs:new Set(),
+  attackCounts:{},         // type -> count for charts
+  agentActionCounts:{},    // id -> count for bar chart
+  eventsThisSecond:0,
+  eventsSecDisplay:0,
+  activeThreats:0,
+  threatLevel:'LOW',
+  networkNode:{ firewall:'ok', lb:'ok', web:'ok', app:'ok', db:'ok', endpoints:'ok', cloud:'ok', vpn:'ok' },
+  settings:{ tts:true, toasts:true, autoRespond:true, speed:3200 },
+  listening:false,
+  incidentSeq:1000,
+};
+
+AGENTS.forEach(a=>{
+  state.agents[a.id] = { status:'monitoring', lastAction:'Awaiting telemetry from the sensor grid…', enabled:true, ts:Date.now(), actions:[] };
+  state.agentActionCounts[a.id]=0;
+});
+state.agents.decision.lastAction = 'Standing by. Ready to correlate signals from all fourteen agents.';
+
+/* ---------------------------------------------------------------
+   3. EVENT SIMULATION ENGINE  (mirrors backend/app/event_sim/log_generator.py)
+   --------------------------------------------------------------- */
+const ATTACK_TYPES = ['brute_force','port_scan','ddos','sql_injection','phishing_attempt','malware_signature','insider_anomaly','credential_leak','normal','normal','normal'];
+
+const PIPELINES = {
+  brute_force:      ['login','password','threatintel','decision','incident'],
+  port_scan:        ['network','firewall','threatintel','decision'],
+  ddos:             ['network','firewall','threatintel','decision','incident'],
+  sql_injection:    ['malware','log','threatintel','decision','incident','forensics'],
+  phishing_attempt: ['phishing','threatintel','decision','incident'],
+  malware_signature:['malware','forensics','threatintel','decision','incident'],
+  insider_anomaly:  ['insider','log','threatintel','decision','incident'],
+  credential_leak:  ['password','login','threatintel','decision'],
+  normal:           ['log'],
+};
+
+const SEVERITY_BY_TYPE = {
+  brute_force:['medium','high'], port_scan:['low','medium'], ddos:['high','critical'],
+  sql_injection:['critical','critical','high'], phishing_attempt:['medium','high'],
+  malware_signature:['high','critical'], insider_anomaly:['high','medium'],
+  credential_leak:['medium','low'], normal:['low'],
+};
+
+function randIP(){ return `${rint(1,223)}.${rint(0,255)}.${rint(0,255)}.${rint(0,255)}`; }
+function rint(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function pad(n){ return n<10?'0'+n:n; }
+function timeStr(d){ d=d||new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; }
+
+function generateEvent(){
+  const type = pick(ATTACK_TYPES);
+  const ip = randIP();
+  const ev = { id:crypto.randomUUID?crypto.randomUUID():String(Math.random()), type, ip, ts:new Date(), severity:pick(SEVERITY_BY_TYPE[type]) };
+  switch(type){
+    case 'brute_force': ev.detail = `${rint(5,50)} failed logins → port 22`; break;
+    case 'port_scan': ev.detail = `${rint(10,200)} ports scanned in ${rint(1,10)}s`; break;
+    case 'ddos': ev.detail = `${rint(500,5000)} req/s flood detected`; break;
+    case 'sql_injection': ev.detail = `payload ' OR 1=1 -- on /login`; break;
+    case 'phishing_attempt': ev.detail = `spoofed sender, credential-harvest link`; break;
+    case 'malware_signature': ev.detail = `known signature match on endpoint`; break;
+    case 'insider_anomaly': ev.detail = `abnormal off-hours data access`; break;
+    case 'credential_leak': ev.detail = `credential pair found on paste site`; break;
+    default: ev.detail = `${rint(1,20)} req/s, nominal baseline`;
+  }
+  return ev;
+}
+
+let simTimer=null;
+function startSim(){
+  clearInterval(simTimer);
+  simTimer = setInterval(()=>{ processEvent(generateEvent()); }, state.settings.speed);
+}
+
+/* ---------------------------------------------------------------
+   4. PIPELINE PROCESSING
+   --------------------------------------------------------------- */
+function processEvent(ev){
+  state.eventsThisSecond++;
+  state.attackCounts[ev.type]=(state.attackCounts[ev.type]||0)+1;
+
+  const chain = PIPELINES[ev.type].filter(id=>state.agents[id].enabled);
+  const tag = ev.severity==='critical'?'t-crit':ev.severity==='high'?'t-warn':ev.severity==='medium'?'t-warn':'t-info';
+  pushLog(tag, `[${ev.type.toUpperCase()}] ${ev.ip} — ${ev.detail}`);
+
+  let incident=null;
+  if(ev.type!=='normal'){
+    incident = {
+      id:'INC-'+(state.incidentSeq++), type:ev.type, ip:ev.ip, severity:ev.severity,
+      status:'open', ts:new Date(), agents:chain.slice(), detail:ev.detail,
+      timeline:[{agent:'decision', text:`Event ingested from sensor grid: ${ev.type.replace('_',' ')} originating ${ev.ip}.`, ts:new Date()}],
+    };
+  }
+
+  chain.forEach((agentId, idx)=>{
+    setTimeout(()=>runAgentStep(agentId, ev, incident, idx===chain.length-1), idx*380 + rint(60,180));
+  });
+
+  if(incident){
+    setTimeout(()=>{ addIncident(incident); }, chain.length*380 + 260);
+  }
+}
+
+function agentActionText(agentId, ev){
+  const texts = {
+    firewall:      { port_scan:`Blocking scan probes from ${ev.ip}`, ddos:`Deploying rate-limit rule against ${ev.ip}` },
+    network:       { port_scan:`Flagged anomalous scan pattern from ${ev.ip}`, ddos:`Traffic spike detected: ${ev.detail}` },
+    login:         { brute_force:`Detected ${ev.detail} from ${ev.ip}`, credential_leak:`Cross-checking leaked credential against active sessions` },
+    password:      { brute_force:`Forcing password reset on targeted account`, credential_leak:`Credential pair flagged — rotating secret` },
+    malware:       { sql_injection:`Payload signature isolated: ${ev.detail}`, malware_signature:`Quarantining infected endpoint` },
+    phishing:      { phishing_attempt:`Email quarantined — ${ev.detail}` },
+    threatintel:   { '*':`Cross-referencing ${ev.ip} against global threat feeds` },
+    incident:      { '*':`Coordinating containment playbook for ${ev.type.replace('_',' ')}` },
+    log:           { normal:`Baseline traffic logged, no anomaly`, '*':`Correlating logs for ${ev.ip}` },
+    forensics:     { '*':`Capturing volatile evidence &amp; building case file` },
+    insider:       { insider_anomaly:`Behavioural deviation scored — ${ev.detail}` },
+    report:        { '*':`Compiling incident into daily report` },
+    voice:         { '*':`Ready to narrate this event on request` },
+    decision:      { '*':`Weighing agent findings, selecting response for ${ev.type.replace('_',' ')}` },
+  };
+  const set = texts[agentId]||{};
+  return set[ev.type]||set['*']||`Processing ${ev.type.replace('_',' ')} signal from ${ev.ip}`;
+}
+
+function runAgentStep(agentId, ev, incident, isLast){
+  const a = state.agents[agentId];
+  if(!a || !a.enabled) return;
+  a.status = agentId==='forensics'||agentId==='decision' ? 'investigating' : 'active';
+  a.ts = Date.now();
+  a.lastAction = agentActionText(agentId, ev);
+  a.actions.unshift({ text:a.lastAction, ts:new Date(), severity:ev.severity });
+  a.actions = a.actions.slice(0,8);
+  state.agentActionCounts[agentId] = (state.agentActionCounts[agentId]||0)+1;
+
+  if(incident) incident.timeline.push({ agent:agentId, text:a.lastAction, ts:new Date() });
+
+  updateAgentDOM(agentId);
+  pulseHubLine(agentId);
+  updateFocusCard(agentId, ev);
+
+  // settle back to monitoring after a bit
+  setTimeout(()=>{
+    if(state.agents[agentId].ts===a.ts){
+      state.agents[agentId].status='monitoring';
+      updateAgentDOM(agentId);
+    }
+  }, 2600);
+
+  if(isLast && agentId!=='log'){
+    // network node visualization update
+    if(['firewall','network'].includes(agentId)){
+      const sev = ev.severity;
+      const key = ev.type==='ddos'?'lb':ev.type==='port_scan'?'firewall':'firewall';
+      flashNetworkNode(key, sev);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------
+   5. INCIDENTS
+   --------------------------------------------------------------- */
+function addIncident(inc){
+  state.incidents.unshift(inc);
+  state.incidents = state.incidents.slice(0,120);
+  recomputeStats();
+  renderDashIncidents();
+  renderIncidentTable();
+  renderCharts();
+
+  if(['high','critical'].includes(inc.severity)){
+    if(state.settings.toasts) toast(inc.severity==='critical'?'crit':'warn', `${inc.severity.toUpperCase()} — ${inc.type.replace('_',' ')}`, `${inc.ip} · routed to ${inc.agents.length} agents`);
+    if(inc.severity==='critical'){
+      addCase(inc);
+      if(state.settings.autoRespond){
+        setTimeout(()=>{
+          inc.status='contained';
+          inc.timeline.push({agent:'incident', text:`Auto-containment executed: ${inc.ip} isolated pending review.`, ts:new Date()});
+          renderIncidentTable(); renderDashIncidents();
+          if(state.currentDrawerId===inc.id) openDrawer(inc.id);
+        }, 2200);
+      }
+    }
+  }
+}
+
+function addCase(inc){
+  state.cases.unshift({
+    id:'CASE-'+inc.id.split('-')[1], incidentId:inc.id, type:inc.type, ip:inc.ip, ts:inc.ts,
+    hash: [...Array(3)].map(()=>Math.random().toString(16).slice(2,10)).join(':'),
+    findings:[
+      `Initial vector: ${inc.detail}`,
+      `Source ${inc.ip} correlated across ${inc.agents.length} agent signals`,
+      `Threat Intelligence Agent: ${Math.random()>0.5?'known malicious IP reputation':'no prior reputation on record'}`,
+      `Recommended action: ${inc.severity==='critical'?'isolate host & rotate credentials':'monitor & rate-limit'}`,
+    ],
+  });
+  renderCaseList();
+}
+
+function recomputeStats(){
+  state.activeThreats = state.incidents.filter(i=>i.status==='open').length;
+  const crit = state.incidents.filter(i=>i.severity==='critical'&&i.status==='open').length;
+  const high = state.incidents.filter(i=>i.severity==='high'&&i.status==='open').length;
+  state.threatLevel = crit>0?'CRITICAL':high>1?'HIGH':state.activeThreats>2?'ELEVATED':'LOW';
+}
+
+/* ---------------------------------------------------------------
+   6. DOM: sprite-safe helpers
+   --------------------------------------------------------------- */
+function svgUse(icon){ return `<svg class="icon"><use href="#${icon}"/></svg>`; }
+function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function statusBadgeClass(s){ return {monitoring:'b-monitoring',active:'b-active',investigating:'b-investigating',idle:'b-idle',offline:'b-offline'}[s]||'b-idle'; }
+function sevClass(s){ return 'sev-'+s; }
+
+/* ---------------------------------------------------------------
+   7. RENDER: agent cards
+   --------------------------------------------------------------- */
+function agentCardHTML(agent, compact){
+  const a = state.agents[agent.id];
+  const spark = [...Array(10)].map(()=>rint(3,16)).map(h=>`<i style="height:${h}px"></i>`).join('');
+  return `
+  <div class="agent-card neo ${a.status==='active'||a.status==='investigating'?'is-active':''} ${!a.enabled?'is-off':''}" data-agent="${agent.id}" data-open-agent="${agent.id}">
+    <div class="agent-top">
+      <div class="a-avatar" style="background:linear-gradient(150deg,${agent.grad[0]},${agent.grad[1]})">${svgUse(agent.icon)}</div>
+      <div style="min-width:0">
+        <div class="agent-name">${agent.name}</div>
+        <div class="agent-domain">${agent.domain}</div>
+      </div>
+    </div>
+    <div class="agent-action" data-field="lastAction">${escapeHtml(a.lastAction)}</div>
+    <div class="agent-foot">
+      <span class="badge ${statusBadgeClass(a.enabled?a.status:'offline')}" data-field="badge">${a.enabled? a.status.toUpperCase() : 'OFFLINE'}</span>
+      ${compact? `<div class="mini-spark">${spark}</div>` : `<button class="toggle ${a.enabled?'on':''}" data-toggle-agent="${agent.id}"></button>`}
+    </div>
+  </div>`;
+}
+
+function renderAgentGrids(){
+  document.getElementById('dashAgentGrid').innerHTML = AGENTS.map(a=>agentCardHTML(a,true)).join('');
+  document.getElementById('fullAgentGrid').innerHTML = AGENTS.map(a=>agentCardHTML(a,false)).join('');
+  renderSettingsAgents();
+  wireAgentCardClicks();
+}
+
+function updateAgentDOM(agentId){
+  document.querySelectorAll(`[data-agent="${agentId}"]`).forEach(card=>{
+    const a = state.agents[agentId];
+    card.classList.toggle('is-active', a.status==='active'||a.status==='investigating');
+    const action = card.querySelector('[data-field="lastAction"]');
+    if(action) action.textContent = a.lastAction;
+    const badge = card.querySelector('[data-field="badge"]');
+    if(badge){ badge.textContent = a.enabled? a.status.toUpperCase(): 'OFFLINE'; badge.className = 'badge '+statusBadgeClass(a.enabled?a.status:'offline'); }
+  });
+  updateHubNode(agentId);
+}
+
+function wireAgentCardClicks(){
+  document.querySelectorAll('[data-open-agent]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      if(e.target.closest('[data-toggle-agent]')) return;
+      showAgentToast(el.getAttribute('data-open-agent'));
+    });
+  });
+  document.querySelectorAll('[data-toggle-agent]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const id = btn.getAttribute('data-toggle-agent');
+      toggleAgent(id);
+    });
+  });
+}
+
+function showAgentToast(id){
+  const agent = byId(id); const a = state.agents[id];
+  toast('info', agent.name, a.lastAction);
+}
+
+function toggleAgent(id){
+  const a = state.agents[id];
+  a.enabled = !a.enabled;
+  a.status = a.enabled? 'monitoring':'offline';
+  a.lastAction = a.enabled? 'Re-activated. Resuming monitoring…' : 'Manually disabled by operator.';
+  updateAgentDOM(id);
+  renderAgentGrids();
+  recomputeStats(); renderStats();
+  toast(a.enabled?'ok':'warn', byId(id).name, a.enabled? 'Agent enabled':'Agent disabled');
+}
+
+function renderSettingsAgents(){
+  const el = document.getElementById('settingsAgentList');
+  el.innerHTML = AGENTS.map(agent=>{
+    const a = state.agents[agent.id];
+    return `<div class="setting-row">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0">
+        <div class="a-avatar" style="width:32px;height:32px;border-radius:9px;background:linear-gradient(150deg,${agent.grad[0]},${agent.grad[1]})">${svgUse(agent.icon)}</div>
+        <div style="min-width:0"><b>${agent.name}</b><p>${agent.domain}</p></div>
+      </div>
+      <button class="toggle ${a.enabled?'on':''}" data-toggle-agent="${agent.id}"></button>
+    </div>`;
+  }).join('');
+  wireAgentCardClicks();
+}
+
+/* ---------------------------------------------------------------
+   8. RENDER: hub visualization (signature element)
+   --------------------------------------------------------------- */
+const SAT_AGENTS = AGENTS.filter(a=>a.id!=='decision');
+function buildHub(){
+  const svg = document.getElementById('hubSvg');
+  const cx=280, cy=205, R=155;
+  let html='';
+  SAT_AGENTS.forEach((agent,i)=>{
+    const angle = (i/SAT_AGENTS.length)*Math.PI*2 - Math.PI/2;
+    const x = cx+R*Math.cos(angle), y = cy+R*Math.sin(angle);
+    html+=`<line id="hub-line-${agent.id}" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(163,177,204,.5)" stroke-width="1.4"/>`;
+  });
+  html+=`<circle cx="${cx}" cy="${cy}" r="46" fill="url(#coreGrad)" />`;
+  html+=`<circle cx="${cx}" cy="${cy}" r="55" fill="none" stroke="rgba(52,87,216,.25)" stroke-width="1.5"/>`;
+  html+=`<foreignObject x="${cx-16}" y="${cy-16}" width="32" height="32"><div xmlns="http://www.w3.org/1999/xhtml" style="color:#fff;width:32px;height:32px">${svgUse('ic-cpu')}</div></foreignObject>`;
+  html+=`<text x="${cx}" y="${cy+72}" text-anchor="middle" class="hub-center-label" font-family="IBM Plex Mono">DECISION CORE</text>`;
+
+  SAT_AGENTS.forEach((agent,i)=>{
+    const angle = (i/SAT_AGENTS.length)*Math.PI*2 - Math.PI/2;
+    const x = cx+R*Math.cos(angle), y = cy+R*Math.sin(angle);
+    html+=`<g id="hub-node-${agent.id}" class="hub-node" transform="translate(${x},${y})" style="cursor:pointer">
+      <circle r="24" fill="${agent.grad[0]}" opacity="0.14"/>
+      <circle r="19" fill="var(--surface,#EAEFF6)" stroke="${agent.grad[0]}" stroke-width="1.6"/>
+      <foreignObject x="-10" y="-10" width="20" height="20"><div xmlns="http://www.w3.org/1999/xhtml" style="color:${agent.grad[1]};width:20px;height:20px">${svgUse(agent.icon)}</div></foreignObject>
+      <text y="34" text-anchor="middle" font-size="8.4" font-family="IBM Plex Mono" fill="var(--muted,#6E7890)">${agent.name.replace(' Agent','')}</text>
+    </g>`;
+  });
+
+  svg.innerHTML = `<defs><radialGradient id="coreGrad" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#5378ea"/><stop offset="100%" stop-color="#16296e"/>
+    </radialGradient></defs>` + html;
+
+  svg.querySelectorAll('[id^="hub-node-"]').forEach(node=>{
+    node.addEventListener('click', ()=>showAgentToast(node.id.replace('hub-node-','')));
+  });
+}
+
+function pulseHubLine(agentId){
+  const line = document.getElementById('hub-line-'+agentId);
+  const node = document.getElementById('hub-node-'+agentId);
+  if(!line) return;
+  const agent = byId(agentId);
+  line.setAttribute('stroke', agent.grad[0]);
+  line.setAttribute('stroke-width','2.6');
+  line.style.filter=`drop-shadow(0 0 4px ${agent.grad[0]})`;
+  if(node) node.querySelector('circle:nth-child(2)').setAttribute('fill', agent.grad[0]+'22');
+  setTimeout(()=>{
+    line.setAttribute('stroke','rgba(163,177,204,.5)');
+    line.setAttribute('stroke-width','1.4');
+    line.style.filter='none';
+    if(node) node.querySelector('circle:nth-child(2)').setAttribute('fill','var(--surface,#EAEFF6)');
+  }, 1500);
+}
+function updateHubNode(){ /* reserved for future per-status styling */ }
+
+function updateFocusCard(agentId, ev){
+  const agent = byId(agentId);
+  document.getElementById('focusAvatar').style.background = `linear-gradient(150deg,${agent.grad[0]},${agent.grad[1]})`;
+  document.getElementById('focusAvatar').innerHTML = svgUse(agent.icon);
+  document.getElementById('focusName').textContent = agent.name;
+  document.getElementById('focusDomain').textContent = agent.domain;
+  document.getElementById('focusMsg').innerHTML = escapeHtml(state.agents[agentId].lastAction);
+  const badge = document.getElementById('focusBadge');
+  const st = state.agents[agentId].status;
+  badge.textContent = st.toUpperCase(); badge.className='badge '+statusBadgeClass(st);
+  document.getElementById('focusTime').textContent = timeStr(ev.ts);
+}
+
+/* ---------------------------------------------------------------
+   9. RENDER: log stream
+   --------------------------------------------------------------- */
+function pushLog(tagClass, msg){
+  const el = document.getElementById('logStream');
+  const row = document.createElement('div');
+  row.className='log-line';
+  row.innerHTML = `<span class="log-time">${timeStr()}</span><span class="log-tag ${tagClass}">●</span><span class="log-msg">${escapeHtml(msg)}</span>`;
+  el.prepend(row);
+  while(el.children.length>80) el.removeChild(el.lastChild);
+}
+
+/* ---------------------------------------------------------------
+   10. RENDER: incidents
+   --------------------------------------------------------------- */
+function renderDashIncidents(){
+  const el = document.getElementById('dashIncidentList');
+  const items = state.incidents.slice(0,6);
+  if(!items.length){ el.innerHTML = `<div class="empty-state">${svgUse('ic-shield')}<p>No incidents yet. Monitoring in progress…</p></div>`; return; }
+  el.innerHTML = items.map(inc=>`
+    <div class="incident-row neo-flat" data-open-incident="${inc.id}">
+      <div class="inc-sev-bar" style="background:var(--${inc.severity==='high'?'warning':inc.severity})"></div>
+      <div class="inc-body">
+        <div class="inc-title">${labelType(inc.type)} <span class="badge ${'b-'+(inc.status==='open'?'active':inc.status==='contained'?'investigating':'resolved')}" style="margin-left:6px">${inc.status}</span></div>
+        <div class="inc-meta"><span>${inc.ip}</span><span>${timeStr(inc.ts)}</span><span class="${sevClass(inc.severity)}"><i class="sev-dot"></i> ${inc.severity}</span></div>
+      </div>
+    </div>`).join('');
+  wireIncidentOpen();
+}
+
+function labelType(t){ return t.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()); }
+
+let activeFilter='all';
+function renderIncidentTable(){
+  const el = document.getElementById('incidentTable');
+  let items = state.incidents;
+  if(activeFilter==='open') items = items.filter(i=>i.status==='open');
+  else if(activeFilter!=='all') items = items.filter(i=>i.severity===activeFilter);
+  document.getElementById('navIncidentBadge').textContent = state.incidents.filter(i=>i.status==='open').length;
+
+  if(!items.length){ el.innerHTML = `<div class="empty-state neo">${svgUse('ic-alert-tri')}<p>No incidents match this filter.</p></div>`; return; }
+  el.innerHTML = items.slice(0,60).map(inc=>`
+    <div class="inc-table-row neo-flat" data-open-incident="${inc.id}">
+      <span class="sev-dot" style="background:var(--${inc.severity==='high'?'warning':inc.severity})"></span>
+      <div class="cell-main"><b>${labelType(inc.type)}</b><span>${inc.id} · ${timeStr(inc.ts)}</span></div>
+      <div class="cell-sub">${inc.type.replace(/_/g,' ')}</div>
+      <div class="cell-sub">${inc.ip}</div>
+      <div class="cell-sub">${inc.agents.length} agents</div>
+      <span class="badge ${'b-'+(inc.status==='open'?'active':inc.status==='contained'?'investigating':'resolved')}">${inc.status}</span>
+    </div>`).join('');
+  wireIncidentOpen();
+}
+
+function wireIncidentOpen(){
+  document.querySelectorAll('[data-open-incident]').forEach(el=>{
+    el.addEventListener('click', ()=>openDrawer(el.getAttribute('data-open-incident')));
+  });
+}
+
+document.addEventListener('click', (e)=>{
+  const chip = e.target.closest('[data-filter]');
+  if(chip){
+    document.querySelectorAll('.chip[data-filter]').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.getAttribute('data-filter');
+    renderIncidentTable();
+  }
+});
+
+/* ---------------------------------------------------------------
+   11. INCIDENT DRAWER
+   --------------------------------------------------------------- */
+state.currentDrawerId = null;
+function openDrawer(id){
+  const inc = state.incidents.find(i=>i.id===id);
+  if(!inc) return;
+  state.currentDrawerId = id;
+  const drawer = document.getElementById('incidentDrawer');
+  drawer.innerHTML = `
+    <div class="drawer-head">
+      <div>
+        <span class="badge ${sevClass(inc.severity)}" style="background:var(--${inc.severity==='high'?'warning':inc.severity}-soft)"><i class="sev-dot"></i>${inc.severity}</span>
+        <h2 style="font-family:var(--f-display);font-size:19px;margin:10px 0 4px">${labelType(inc.type)}</h2>
+        <div class="page-sub" style="margin:0">${inc.id} · ${inc.ip} · ${timeStr(inc.ts)}</div>
+      </div>
+      <button class="neo-btn icon-btn" id="drawerClose" style="width:34px;height:34px">${svgUse('ic-close')}</button>
+    </div>
+    <div class="drawer-body">
+      <div class="neo-inset" style="padding:14px;font-size:12.5px;color:var(--ink-2);line-height:1.6">${escapeHtml(inc.detail)}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="neo-btn" id="ackBtn" style="padding:9px 14px;font-size:11.5px;font-weight:700;display:flex;gap:6px;align-items:center">${svgUse('ic-check')}Acknowledge</button>
+        <button class="neo-btn" id="resolveBtn" style="padding:9px 14px;font-size:11.5px;font-weight:700;display:flex;gap:6px;align-items:center">${svgUse('ic-shield')}Resolve</button>
+        <button class="neo-btn" id="blockBtn" style="padding:9px 14px;font-size:11.5px;font-weight:700;display:flex;gap:6px;align-items:center">${svgUse('ic-power')}Block ${inc.ip}</button>
+      </div>
+      <div>
+        <div class="eyebrow" style="margin-bottom:12px">Agent Response Timeline</div>
+        <div class="timeline">
+          ${inc.timeline.map((t,i)=>{
+            const agent = byId(t.agent);
+            return `<div class="tl-item">
+              <div class="tl-dot-wrap">
+                <div class="tl-dot" style="background:linear-gradient(150deg,${agent.grad[0]},${agent.grad[1]})">${svgUse(agent.icon)}</div>
+                ${i<inc.timeline.length-1?'<div class="tl-line"></div>':''}
+              </div>
+              <div class="tl-content"><b>${agent.name}</b><p>${escapeHtml(t.text)}</p><time>${timeStr(t.ts)}</time></div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('drawerOverlay').classList.add('show');
+  drawer.classList.add('show');
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  document.getElementById('ackBtn').addEventListener('click', ()=>{ toast('info','Acknowledged', inc.id+' marked as acknowledged.'); });
+  document.getElementById('resolveBtn').addEventListener('click', ()=>{
+    inc.status='resolved';
+    inc.timeline.push({agent:'incident', text:'Marked resolved by operator.', ts:new Date()});
+    renderIncidentTable(); renderDashIncidents(); recomputeStats(); renderStats();
+    openDrawer(id);
+    toast('ok','Resolved', inc.id+' closed out.');
+  });
+  document.getElementById('blockBtn').addEventListener('click', ()=>{
+    state.blockedIPs.add(inc.ip);
+    inc.timeline.push({agent:'firewall', text:`${inc.ip} added to firewall blocklist by operator.`, ts:new Date()});
+    renderFirewallRules();
+    openDrawer(id);
+    toast('warn','IP Blocked', inc.ip+' added to the deny list.');
+  });
+}
+function closeDrawer(){
+  document.getElementById('drawerOverlay').classList.remove('show');
+  document.getElementById('incidentDrawer').classList.remove('show');
+  state.currentDrawerId=null;
+}
+document.getElementById('drawerOverlay')?.addEventListener('click', closeDrawer);
+
+/* ---------------------------------------------------------------
+   12. NETWORK MAP
+   --------------------------------------------------------------- */
+const NET_NODES = [
+  {id:'cloud', label:'Internet', x:60, y:210, icon:'ic-globe'},
+  {id:'firewall', label:'Firewall', x:190, y:210, icon:'ic-shield'},
+  {id:'lb', label:'Core Switch', x:320, y:210, icon:'ic-network'},
+  {id:'web', label:'Web Server', x:460, y:100, icon:'ic-server'},
+  {id:'app', label:'App Server', x:460, y:210, icon:'ic-server'},
+  {id:'db', label:'Database', x:460, y:320, icon:'ic-server'},
+  {id:'endpoints', label:'Employee Endpoints', x:580, y:130, icon:'ic-login'},
+  {id:'cloudsvc', label:'Cloud Storage', x:580, y:300, icon:'ic-globe'},
+];
+const NET_EDGES = [['cloud','firewall'],['firewall','lb'],['lb','web'],['lb','app'],['lb','db'],['lb','endpoints'],['lb','cloudsvc']];
+function statusColor(s){ return {ok:'var(--success)', warn:'var(--warning)', crit:'var(--danger)', off:'var(--faint)'}[s]||'var(--success)'; }
+
+function buildNetworkMap(){
+  const svg = document.getElementById('topoSvg');
+  let html = NET_EDGES.map(([a,b])=>{
+    const A=NET_NODES.find(n=>n.id===a), B=NET_NODES.find(n=>n.id===b);
+    return `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="rgba(163,177,204,.55)" stroke-width="2"/>`;
+  }).join('');
+  html += NET_NODES.map(n=>`
+    <g id="net-${n.id}" transform="translate(${n.x},${n.y})" style="cursor:pointer">
+      <circle r="30" fill="none" stroke="${statusColor(state.networkNode[n.id])}" stroke-width="2.2" id="net-${n.id}-ring"/>
+      <circle r="24" fill="var(--surface,#EAEFF6)"/>
+      <foreignObject x="-12" y="-12" width="24" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="color:${statusColor(state.networkNode[n.id])};width:24px;height:24px">${svgUse(n.icon)}</div></foreignObject>
+      <text y="46" text-anchor="middle" font-size="10.5" font-family="IBM Plex Mono" fill="var(--muted,#6E7890)">${n.label}</text>
+    </g>`).join('');
+  svg.innerHTML = html;
+  svg.querySelectorAll('g[id^="net-"]').forEach(g=>{
+    g.addEventListener('click', ()=>{
+      const id = g.id.replace('net-','');
+      const node = NET_NODES.find(n=>n.id===id);
+      if(node) toast('info', node.label, `Status: ${state.networkNode[id].toUpperCase()}`);
+    });
+  });
+}
+function flashNetworkNode(id, sev){
+  const level = sev==='critical'?'crit':sev==='high'?'warn':'warn';
+  state.networkNode[id]=level;
+  const ring = document.getElementById(`net-${id}-ring`);
+  if(ring) ring.setAttribute('stroke', statusColor(level));
+  const fo = document.querySelector(`#net-${id} foreignObject div`);
+  if(fo) fo.style.color = statusColor(level);
+  setTimeout(()=>{
+    state.networkNode[id]='ok';
+    if(ring) ring.setAttribute('stroke', statusColor('ok'));
+    if(fo) fo.style.color = statusColor('ok');
+  }, 5000);
+}
+
+function renderFirewallRules(){
+  const el = document.getElementById('firewallRules');
+  const blocked = [...state.blockedIPs];
+  if(!blocked.length){
+    el.innerHTML = `<div class="empty-state">${svgUse('ic-shield')}<p>No manual blocks yet. Firewall Agent is auto-defending on signature match.</p></div>`;
+    return;
+  }
+  el.innerHTML = blocked.slice().reverse().map(ip=>`
+    <div class="rule-row neo-inset"><svg class="icon" style="color:var(--danger)"><use href="#ic-power"/></svg> DENY ${ip} <span style="margin-left:auto;color:var(--muted);font-size:10px">ALL PORTS</span></div>
+  `).join('');
+}
+
+/* ---------------------------------------------------------------
+   13. FORENSICS
+   --------------------------------------------------------------- */
+function renderCaseList(){
+  const el = document.getElementById('caseList');
+  if(!state.cases.length){ el.innerHTML = `<div class="empty-state">${svgUse('ic-fingerprint')}<p>No forensic cases opened yet.</p></div>`; return; }
+  el.innerHTML = state.cases.map(c=>`
+    <div class="case-row neo-flat" data-open-case="${c.id}">
+      <div class="a-avatar" style="width:36px;height:36px;border-radius:10px;background:linear-gradient(150deg,#8a5cf0,#5c34c9)">${svgUse('ic-fingerprint')}</div>
+      <div style="min-width:0;flex:1">
+        <b style="font-size:12.5px;display:block">${c.id}</b>
+        <span class="page-sub" style="margin:0">${labelType(c.type)} · ${c.ip}</span>
+      </div>
+    </div>`).join('');
+  document.querySelectorAll('[data-open-case]').forEach(el2=>{
+    el2.addEventListener('click', ()=>renderCaseDetail(el2.getAttribute('data-open-case')));
+  });
+  if(state.cases[0]) renderCaseDetail(state.cases[0].id);
+}
+function renderCaseDetail(id){
+  const c = state.cases.find(x=>x.id===id);
+  const el = document.getElementById('caseDetail');
+  if(!c){ el.innerHTML = `<div class="empty-state">${svgUse('ic-fingerprint')}<p>Select a case to view the evidence chain.</p></div>`; return; }
+  el.innerHTML = `
+    <div class="panel-head"><h3>${c.id} — ${labelType(c.type)}</h3><span class="badge b-investigating">CASE OPEN</span></div>
+    <div class="page-sub" style="margin-bottom:14px">Source ${c.ip} · Opened ${timeStr(c.ts)} · Evidence hash <span class="hash-tag">${c.hash}</span></div>
+    ${c.findings.map((f,i)=>`
+      <div class="evidence-item neo-inset" style="margin-bottom:10px">
+        <svg class="icon" style="color:var(--accent)"><use href="#ic-search"/></svg>
+        <div style="font-size:12px;color:var(--ink-2);line-height:1.55">${escapeHtml(f)}</div>
+      </div>`).join('')}
+  `;
+}
+
+/* ---------------------------------------------------------------
+   14. REPORTS / CHARTS
+   --------------------------------------------------------------- */
+const TYPE_COLORS = { brute_force:'#7c5cf0', port_scan:'#12b3c4', ddos:'#dd3e46', sql_injection:'#e5636a', phishing_attempt:'#f0973a', malware_signature:'#b13138', insider_anomaly:'#c94b8c', credential_leak:'#b8862e', normal:'#1e9e71' };
+
+function renderCharts(){
+  // donut
+  const svg = document.getElementById('donutSvg');
+  const entries = Object.entries(state.attackCounts).filter(([k])=>k!=='normal');
+  const total = entries.reduce((s,[,v])=>s+v,0) || 1;
+  let acc=0; const R=60, C=2*Math.PI*R;
+  let circles='';
+  entries.forEach(([type,val])=>{
+    const frac = val/total; const len = frac*C;
+    circles += `<circle cx="70" cy="70" r="${R}" fill="none" stroke="${TYPE_COLORS[type]}" stroke-width="16" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-acc}" transform="rotate(-90 70 70)"/>`;
+    acc += len;
+  });
+  svg.innerHTML = entries.length? circles + `<circle cx="70" cy="70" r="${R-16}" fill="var(--bg,#E7ECF3)"/><text x="70" y="66" text-anchor="middle" font-family="Sora" font-weight="700" font-size="20" fill="var(--ink,#1D2436)">${total}</text><text x="70" y="82" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="var(--muted,#6E7890)">EVENTS</text>`
+    : `<circle cx="70" cy="70" r="${R}" fill="none" stroke="var(--sh-dark-soft,#ccc)" stroke-width="16"/>`;
+  document.getElementById('donutLegend').innerHTML = entries.length? entries.map(([type,val])=>`<span><i class="dot" style="background:${TYPE_COLORS[type]}"></i>${labelType(type)} <b style="margin-left:4px;font-family:var(--f-mono)">${val}</b></span>`).join('') : `<span style="color:var(--muted)">No events yet</span>`;
+
+  // bar chart
+  const bar = document.getElementById('barChart');
+  const maxVal = Math.max(1, ...Object.values(state.agentActionCounts));
+  bar.innerHTML = AGENTS.map(a=>{
+    const v = state.agentActionCounts[a.id]||0;
+    const h = Math.round((v/maxVal)*100);
+    return `<div class="bar-col"><div class="bar" style="height:${h}%;background:linear-gradient(180deg,${a.grad[0]},${a.grad[1]})" title="${v}"></div><span>${a.name.replace(' Agent','').split(' ')[0]}</span></div>`;
+  }).join('');
+}
+
+function generateReport(){
+  const now = new Date();
+  const openCount = state.incidents.filter(i=>i.status==='open').length;
+  const critCount = state.incidents.filter(i=>i.severity==='critical').length;
+  const report = {
+    id:'RPT-'+now.getTime().toString().slice(-6),
+    ts:now,
+    summary:`${state.incidents.length} incidents processed · ${critCount} critical · ${openCount} currently open · threat level ${state.threatLevel}.`,
+  };
+  state.reports.unshift(report);
+  renderReports();
+  toast('ok','Report generated', report.id+' compiled by Report Generation Agent.');
+  pushLog('t-ok', `Report Generation Agent compiled ${report.id}`);
+
+  const blob = new Blob([JSON.stringify({
+    report_id:report.id, generated_at:now.toISOString(), threat_level:state.threatLevel,
+    active_threats:openCount, total_incidents:state.incidents.length,
+    incidents: state.incidents.slice(0,50).map(i=>({id:i.id,type:i.type,ip:i.ip,severity:i.severity,status:i.status,ts:i.ts})),
+    agent_activity: state.agentActionCounts,
+  }, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=report.id+'.json'; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 4000);
+}
+function renderReports(){
+  const el = document.getElementById('reportList');
+  if(!state.reports.length){ el.innerHTML = `<div class="empty-state">${svgUse('ic-report')}<p>No reports generated yet — click "Generate Report".</p></div>`; return; }
+  el.innerHTML = state.reports.map(r=>`
+    <div class="report-item neo-flat">
+      <svg class="icon" style="color:var(--success)"><use href="#ic-report"/></svg>
+      <div style="flex:1;min-width:0"><b style="font-size:12.5px;display:block">${r.id}</b><span class="page-sub" style="margin:0">${escapeHtml(r.summary)}</span></div>
+      <span class="page-sub" style="margin:0">${timeStr(r.ts)}</span>
+    </div>`).join('');
+}
+
+/* ---------------------------------------------------------------
+   15. STATS
+   --------------------------------------------------------------- */
+function renderStats(){
+  document.getElementById('statActiveThreats').textContent = state.activeThreats;
+  document.getElementById('statThreatsTrend').textContent = (state.activeThreats>0?'+':'')+state.activeThreats;
+  document.getElementById('statEventsSec').textContent = state.eventsSecDisplay;
+  document.getElementById('sysEventsSec').textContent = state.eventsSecDisplay;
+  const online = AGENTS.filter(a=>state.agents[a.id].enabled).length;
+  document.getElementById('statAgentsOnline').textContent = online;
+  document.getElementById('statAgentsTrend').textContent = Math.round(online/14*100)+'%';
+
+  const pill = document.getElementById('threatPill');
+  const dot = document.getElementById('threatDot');
+  const txt = document.getElementById('threatLevelText');
+  const map = { LOW:['var(--success)','var(--success-soft)'], ELEVATED:['var(--warning)','var(--warning-soft)'], HIGH:['#e8722c','var(--warning-soft)'], CRITICAL:['var(--danger)','var(--danger-soft)'] };
+  const [c,bg] = map[state.threatLevel];
+  dot.style.background=c; txt.style.color=c; txt.textContent='THREAT LEVEL: '+state.threatLevel; pill.style.background=bg;
+
+  const sp = document.getElementById('sysPulse');
+  sp.className = 'pulse-dot ' + (state.threatLevel==='CRITICAL'?'danger':state.threatLevel==='HIGH'||state.threatLevel==='ELEVATED'?'warn':'');
+  document.getElementById('sysStatusText').textContent = state.threatLevel==='LOW'? 'All systems nominal' : state.activeThreats+' open threat(s) — agents engaged';
+
+  const bell = document.getElementById('bellCount');
+  const openHigh = state.incidents.filter(i=>i.status==='open' && ['high','critical'].includes(i.severity)).length;
+  bell.textContent = openHigh; bell.classList.toggle('hidden', openHigh===0);
+}
+setInterval(()=>{ state.eventsSecDisplay = state.eventsThisSecond; state.eventsThisSecond=0; renderStats(); }, 1000);
+
+/* ---------------------------------------------------------------
+   16. TOASTS
+   --------------------------------------------------------------- */
+function toast(type, title, msg){
+  if(!state.settings.toasts && type!=='info') { /* still show info manually triggered */ }
+  const wrap = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast neo '+type;
+  const icon = type==='crit'?'ic-alert-tri':type==='warn'?'ic-siren':type==='ok'?'ic-check':'ic-bell';
+  el.innerHTML = `${svgUse(icon)}<div><b>${escapeHtml(title)}</b><p>${escapeHtml(msg)}</p></div>`;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.transition='opacity .3s, transform .3s'; el.style.opacity='0'; el.style.transform='translateX(30px)'; setTimeout(()=>el.remove(),320); }, 4600);
+}
+
+/* ---------------------------------------------------------------
+   17. VOICE CONSOLE
+   --------------------------------------------------------------- */
+let recognition=null, recognitionSupported=false;
+function initSpeech(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(SR){
+    recognitionSupported=true;
+    recognition = new SR();
+    recognition.continuous=false; recognition.interimResults=false; recognition.lang='en-US';
+    recognition.onresult = (e)=>{
+      const text = e.results[0][0].transcript;
+      appendTranscript('user', text);
+      handleCommand(text);
+    };
+    recognition.onend = ()=>{ setListening(false); };
+    recognition.onerror = ()=>{ setListening(false); appendTranscript('atlas', "I couldn't hear that clearly — try the text console instead."); };
+    document.getElementById('voiceHint').textContent='Tap the orb and speak a command, e.g. "show active threats".';
+  } else {
+    document.getElementById('voiceHint').textContent='Voice recognition isn\u2019t available in this browser/context — use the text console below, it triggers the exact same agent actions.';
+    document.getElementById('micTopBtn').setAttribute('disabled','true');
+  }
+}
+function setListening(on){
+  state.listening=on;
+  document.getElementById('orbOuter').classList.toggle('listening', on);
+  document.getElementById('voiceState').textContent = on? 'Listening…' : 'Tap the orb to speak';
+}
+function toggleListen(){
+  if(!recognitionSupported){ document.getElementById('cmdInput').focus(); toast('info','Voice unavailable','Use the text command bar — same brain, no mic needed.'); return; }
+  if(state.listening){ recognition.stop(); setListening(false); }
+  else { try{ recognition.start(); setListening(true); }catch(e){} }
+}
+function speak(text){
+  if(!state.settings.tts) return;
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate=1.02; u.pitch=1; u.volume=0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+function appendTranscript(role, text){
+  const el = document.getElementById('transcriptBody');
+  const div = document.createElement('div');
+  div.className='msg '+(role==='user'?'user':'atlas');
+  div.innerHTML = `${escapeHtml(text)}<time>${timeStr()}</time>`;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+const COMMANDS = [
+  { k:['system status','status report','how are we doing'], run:()=>{
+      const t = `Threat level ${state.threatLevel}. ${state.activeThreats} active threats. ${AGENTS.filter(a=>state.agents[a.id].enabled).length} of 14 agents online. Average response time ${document.getElementById('statMttr').textContent} seconds.`;
+      return t;
+  }},
+  { k:['show active threats','show incidents','open incidents'], run:()=>{ switchView('incidents'); return `Showing ${state.activeThreats} active incidents.`; } },
+  { k:['show agents','agent fleet','agent status'], run:()=>{ switchView('agents'); return `Displaying all fourteen agents. ${AGENTS.filter(a=>state.agents[a.id].enabled).length} are currently online.`; } },
+  { k:['show network','network map'], run:()=>{ switchView('network'); return 'Opening the network map.'; } },
+  { k:['show reports','open reports'], run:()=>{ switchView('reports'); return 'Here are the latest reports.'; } },
+  { k:['show forensics','open forensics'], run:()=>{ switchView('forensics'); return `Opening forensics — ${state.cases.length} case file${state.cases.length===1?'':'s'} on record.`; } },
+  { k:['show dashboard','command deck','go home'], run:()=>{ switchView('dashboard'); return 'Back to the command deck.'; } },
+  { k:['generate report','create report','compile report'], run:()=>{ generateReport(); return 'Report generated and downloaded by the Report Generation Agent.'; } },
+  { k:['run firewall scan','scan firewall','firewall scan'], run:()=>{
+      const a=state.agents.firewall; a.status='active'; a.lastAction='Manual scan requested by operator via voice command.'; a.ts=Date.now();
+      updateAgentDOM('firewall'); pulseHubLine('firewall');
+      setTimeout(()=>{ a.status='monitoring'; updateAgentDOM('firewall'); },2600);
+      return 'Firewall Agent is running a full perimeter scan now.';
+  }},
+  { k:['check password security','password scan','password audit'], run:()=>{
+      const a=state.agents.password; a.status='active'; a.lastAction='Auditing credential strength across monitored accounts.'; a.ts=Date.now();
+      updateAgentDOM('password'); pulseHubLine('password');
+      setTimeout(()=>{ a.status='monitoring'; updateAgentDOM('password'); },2600);
+      return 'Password Security Agent is auditing credentials now.';
+  }},
+  { k:['lock down network','activate lockdown','lockdown'], run:()=>{ activateLockdown(); return 'Lockdown engaged. All perimeter traffic is now restricted and every agent has been notified.'; } },
+  { k:['acknowledge','acknowledge alert','acknowledge incident'], run:()=>{
+      const inc = state.incidents.find(i=>i.status==='open');
+      if(!inc) return 'There are no open incidents to acknowledge.';
+      toast('info','Acknowledged', inc.id+' acknowledged by voice command.');
+      return `Acknowledged ${inc.id}, a ${inc.severity} ${labelType(inc.type)} incident.`;
+  }},
+  { k:['resolve incident','close incident','resolve'], run:()=>{
+      const inc = state.incidents.find(i=>i.status==='open');
+      if(!inc) return 'There are no open incidents to resolve.';
+      inc.status='resolved'; inc.timeline.push({agent:'incident', text:'Resolved via voice command.', ts:new Date()});
+      renderIncidentTable(); renderDashIncidents(); recomputeStats(); renderStats();
+      return `${inc.id} marked resolved.`;
+  }},
+  { k:['who is online','agents online'], run:()=>`${AGENTS.filter(a=>state.agents[a.id].enabled).length} of 14 agents are online and monitoring.` },
+  { k:['clear alerts','dismiss alerts'], run:()=>{ document.getElementById('toast-container').innerHTML=''; return 'Alerts cleared.'; } },
+  { k:['stop listening'], run:()=>{ setListening(false); return 'Voice input paused.'; } },
+  { k:['help','what can you do','commands'], run:()=>'Try: system status, show active threats, show network map, generate report, run firewall scan, lock down network, or acknowledge incident.' },
+];
+
+function handleCommand(text){
+  const q = text.toLowerCase().trim();
+  let ipMatch = q.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
+  if(q.includes('block') && ipMatch){
+    state.blockedIPs.add(ipMatch[1]); renderFirewallRules();
+    const reply = `${ipMatch[1]} has been blocked by the Firewall Agent.`;
+    appendTranscript('atlas', reply); speak(reply); toast('warn','IP Blocked', ipMatch[1]);
+    pushLog('t-warn', `Firewall Agent blocked ${ipMatch[1]} via voice command`);
+    return;
+  }
+  const found = COMMANDS.find(c=>c.k.some(k=>q.includes(k)));
+  const reply = found? found.run() : "I didn't recognize that command. Say \"help\" to hear what I can do.";
+  appendTranscript('atlas', reply);
+  speak(reply);
+}
+
+function activateLockdown(){
+  Object.keys(state.networkNode).forEach(k=>state.networkNode[k]='warn');
+  buildNetworkMap();
+  AGENTS.forEach(a=>{
+    state.agents[a.id].lastAction='Lockdown protocol acknowledged — heightened monitoring engaged.';
+    state.agents[a.id].status='active'; state.agents[a.id].ts=Date.now();
+    updateAgentDOM(a.id);
+    setTimeout(()=>{ state.agents[a.id].status='monitoring'; updateAgentDOM(a.id); }, 3200);
+  });
+  pushLog('t-crit', 'LOCKDOWN ENGAGED — all perimeter traffic restricted, agent fleet on high alert');
+  toast('crit','Lockdown Engaged','All agents notified. Perimeter traffic restricted.');
+  setTimeout(()=>{ Object.keys(state.networkNode).forEach(k=>state.networkNode[k]='ok'); buildNetworkMap(); }, 6000);
+}
+
+/* ---------------------------------------------------------------
+   18. NAVIGATION / WIRING
+   --------------------------------------------------------------- */
+function switchView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.getAttribute('data-view')===id));
+  const titles = { dashboard:['Command Deck','SECTOR // GLOBAL-INFRA-01'], agents:['Agent Fleet','14 AUTONOMOUS AGENTS'], incidents:['Incidents','RESPONSE QUEUE'], network:['Network Map','TOPOLOGY // LIVE'], forensics:['Forensics','EVIDENCE CHAIN'], reports:['Reports','ANALYTICS'], voice:['Voice Console','SPEECH AI // NLP'], settings:['Settings','SYSTEM CONFIG'] };
+  document.getElementById('pageTitle').textContent = titles[id][0];
+  document.getElementById('pageSub').textContent = titles[id][1];
+  document.getElementById('sidebar').classList.remove('open');
+  if(id==='reports') renderCharts();
+}
+
+function wireUI(){
+  document.querySelectorAll('.nav-item[data-view]').forEach(btn=>{
+    btn.addEventListener('click', ()=>switchView(btn.getAttribute('data-view')));
+  });
+  document.querySelectorAll('[data-view-link]').forEach(el=>{
+    el.addEventListener('click', ()=>switchView(el.getAttribute('data-view-link')));
+  });
+  document.getElementById('mobileNavBtn').addEventListener('click', ()=>document.getElementById('sidebar').classList.toggle('open'));
+  document.getElementById('clearLogBtn').addEventListener('click', ()=>document.getElementById('logStream').innerHTML='');
+  document.getElementById('bellBtn').addEventListener('click', ()=>switchView('incidents'));
+  document.getElementById('scanNetworkBtn').addEventListener('click', ()=>{
+    ['firewall','network'].forEach(id=>{
+      const a=state.agents[id]; a.status='active'; a.lastAction='Running full-perimeter scan…'; a.ts=Date.now();
+      updateAgentDOM(id); pulseHubLine(id);
+      setTimeout(()=>{ a.status='monitoring'; a.lastAction='Scan complete — perimeter clean.'; updateAgentDOM(id); }, 2400);
+    });
+    toast('ok','Scan started','Firewall & Network Monitoring Agents scanning perimeter.');
+    pushLog('t-ok','Manual full network scan initiated by operator');
+  });
+  document.getElementById('genReportBtn').addEventListener('click', generateReport);
+  document.getElementById('dashLockdownBtn').addEventListener('click', activateLockdown);
+
+  document.getElementById('micTopBtn').addEventListener('click', ()=>{ switchView('voice'); toggleListen(); });
+  document.getElementById('orbCore').addEventListener('click', toggleListen);
+  document.getElementById('cmdSendBtn').addEventListener('click', sendTypedCommand);
+  document.getElementById('cmdInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendTypedCommand(); });
+
+  const suggestions = ['system status','show active threats','run firewall scan','generate report','lock down network','show network map','help'];
+  document.getElementById('cmdSuggest').innerHTML = suggestions.map(s=>`<button class="neo-flat" data-suggest="${s}">${s}</button>`).join('');
+  document.querySelectorAll('[data-suggest]').forEach(b=>b.addEventListener('click', ()=>{ document.getElementById('cmdInput').value=b.getAttribute('data-suggest'); sendTypedCommand(); }));
+
+  document.getElementById('ttsToggle').addEventListener('click', function(){ this.classList.toggle('on'); state.settings.tts=this.classList.contains('on'); });
+  document.getElementById('toastToggle').addEventListener('click', function(){ this.classList.toggle('on'); state.settings.toasts=this.classList.contains('on'); });
+  document.getElementById('autoRespondToggle').addEventListener('click', function(){ this.classList.toggle('on'); state.settings.autoRespond=this.classList.contains('on'); });
+  document.getElementById('speedSelect').addEventListener('change', function(){ state.settings.speed=Number(this.value); startSim(); });
+
+  document.getElementById('globalSearch').addEventListener('keydown', (e)=>{
+    if(e.key==='Enter'){
+      const q=e.target.value.trim(); if(!q) return;
+      const inc = state.incidents.find(i=>i.ip===q || i.id.toLowerCase()===q.toLowerCase());
+      if(inc){ switchView('incidents'); openDrawer(inc.id); }
+      else toast('info','No match', `No incident or agent found for "${q}".`);
+    }
+  });
+}
+function sendTypedCommand(){
+  const input = document.getElementById('cmdInput');
+  const text = input.value.trim();
+  if(!text) return;
+  appendTranscript('user', text);
+  handleCommand(text);
+  input.value='';
+}
+
+/* ---------------------------------------------------------------
+   19. INIT
+   --------------------------------------------------------------- */
+function init(){
+  renderAgentGrids();
+  buildHub();
+  buildNetworkMap();
+  renderFirewallRules();
+  renderDashIncidents();
+  renderIncidentTable();
+  renderCaseList();
+  renderReports();
+  renderCharts();
+  renderStats();
+  wireUI();
+  initSpeech();
+  appendTranscript('atlas', "ATLAS online. All fourteen agents are active and the Decision Core is orchestrating live telemetry. Say \u201chelp\u201d to see what I can do.");
+  document.getElementById('statMttr').textContent = '1.8';
+
+  // seed a handful of events so the deck isn't empty on load
+  for(let i=0;i<5;i++){ setTimeout(()=>processEvent(generateEvent()), i*450); }
+  startSim();
+}
+document.addEventListener('DOMContentLoaded', init);
+
+})();
+</script>
+</body>
+</html>

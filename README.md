@@ -1,5 +1,4 @@
 # 🛡️ ATLAS — Adaptive Threat Landscape Autonomous Security
-
 ---
 
 **ATLAS (Adaptive Threat Landscape Autonomous Security)** is an AI-powered autonomous cybersecurity platform designed to **monitor, detect, analyze, and respond to cyber threats in real time**.

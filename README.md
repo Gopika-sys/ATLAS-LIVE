@@ -1,9 +1,8 @@
-🛡️ ATLAS — Adaptive Threat Landscape Autonomous Security
+# 🛡️ ATLAS — Adaptive Threat Landscape Autonomous Security
 
+> **AI-Powered Autonomous Cybersecurity Command Platform**
 
-
-
-AI-Powered Autonomous Cybersecurity Command Platform
+---
 
 ATLAS employs a **multi-agent AI architecture** where each agent is responsible for a specialized cybersecurity domain. Agents operate independently, exchange contextual information through the orchestration layer, and collectively produce a unified security decision.
 

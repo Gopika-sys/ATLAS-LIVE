@@ -73,3 +73,55 @@ Depending on the evaluated severity, ATLAS automatically performs:
 * Store incident memory for future correlation
 
 Critical operations such as **machine isolation**, **forced password reset**, and **session termination** require administrator approval through the guardrail layer.
+
+---
+
+# 👩‍💻 Author
+
+**Gopika**
+
+🔗 **GitHub:** https://github.com/Gopika-sys
+
+🛡️ **Project:** **ATLAS — Adaptive Threat Landscape Autonomous Security**
+
+---
+
+# 💡 Mission
+
+**ATLAS** is more than a cybersecurity dashboard.
+
+It demonstrates how **Artificial Intelligence (AI)**, **Machine Learning (ML)**, **Multi-Agent Systems**, **Voice AI**, and **Autonomous Decision Making** can work together to build an intelligent cyber defense platform capable of **detecting**, **analyzing**, **reasoning**, and **responding** to real-world cybersecurity threats with minimal human intervention.
+
+The mission of ATLAS is to empower Security Operations Centers (SOCs), IT administrators, and cybersecurity professionals with an AI-driven platform that delivers real-time threat visibility, intelligent incident response, and autonomous security orchestration.
+
+---
+
+# ⭐ Support
+
+If you found this project helpful, please consider supporting it!
+
+⭐ **Star** this repository
+
+🍴 **Fork** the project
+
+📢 **Share** it with the cybersecurity community
+
+🤝 **Contribute** new features, security agents, or improvements
+
+💬 **Provide feedback** by opening an issue or submitting a pull request
+
+---
+
+<div align="center">
+
+# 🛡️ ATLAS
+
+## Adaptive Threat Landscape Autonomous Security
+
+### **Building the Next Generation of Autonomous AI Cyber Defense**
+
+**Powered by Artificial Intelligence • Machine Learning • Multi-Agent Systems • NVIDIA LLMs • Voice AI • Autonomous Security**
+
+⭐ **If you like this project, don't forget to Star the repository!** ⭐
+
+</div>

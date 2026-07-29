@@ -2,7 +2,11 @@
 
 ---
 
-ATLAS employs a **multi-agent AI architecture** where each agent is responsible for a specialized cybersecurity domain. Agents operate independently, exchange contextual information through the orchestration layer, and collectively produce a unified security decision.
+ATLAS (Adaptive Threat Landscape Autonomous Security) is an AI-powered autonomous cybersecurity platform designed to monitor, detect, analyze, and respond to cyber threats in real time.
+
+Unlike traditional security monitoring systems that only generate alerts, ATLAS combines Machine Learning, Large Language Models (LLMs), and a Multi-Agent AI Architecture to automatically investigate incidents, make intelligent decisions, and execute security responses.
+
+ATLAS functions as an intelligent Security Operations Center (SOC) capable of protecting Windows and Linux systems with minimal human intervention.
 
 | Agent                            | Primary Responsibility  | Technical Workflow                                                                                       |
 | -------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------- |
